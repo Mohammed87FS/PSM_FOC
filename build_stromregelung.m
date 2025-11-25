@@ -1,11 +1,34 @@
-
 modelName = 'psm_stromregelung';
+
+% Alle Modelle schließen
+bdclose all
+
+% Workspace leeren
+clear all
+close all
+clc
+
+% Modellname neu setzen (war durch clear all gelöscht)
+modelName = 'psm_stromregelung';
+
+% Cached/compiled Dateien löschen
+if exist([modelName '.slxc'], 'file')
+    delete([modelName '.slxc']);
+end
+if exist('slprj', 'dir')
+    rmdir('slprj', 's');
+end
+
+% Bestehende .slx löschen
 if bdIsLoaded(modelName)
     close_system(modelName, 0);
 end
 if exist([modelName '.slx'], 'file')
     delete([modelName '.slx']);
 end
+
+% Kurze Pause, damit Dateisystem aufräumt
+pause(0.5);
 
 new_system(modelName);
 
