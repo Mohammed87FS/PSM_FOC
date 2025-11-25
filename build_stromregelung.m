@@ -158,3 +158,31 @@ add_line(modelName, 'Switch_W/1', 'Sum_W/1');
 add_line(modelName, 'K_W/1',      'Sum_W/2');
 add_line(modelName, 'Sum_W/1',    'Relay_W/1');
 add_line(modelName, 'Relay_W/1',  'W_gate/1');
+
+%% Scope für Visualisierung 
+% Um die Outputs (also Gate Signale) zu sehen, fügen wir einen Scope hinzu.
+% Scope ist wie ein Oszilloskop.. Er zeigt, wie die Signale über die Zeit variieren.
+% Da wir drei Signale haben, verwenden wir einen Mux ..Multiplexer.., um sie zu kombinieren,
+% und verbinden den Mux mit dem Scope. So sieht man alle drei Kurven in einem Fenster.
+
+%  Kombiniert wie gesagt mehrere Signale in eines (hier 3 Eingänge für U, V, W).
+add_block('simulink/Signal Routing/Mux', [modelName '/Mux']);
+set_param([modelName '/Mux'], 'Inputs', '3');  % 3 Eingänge
+set_param([modelName '/Mux'], 'Position', [750, 75, 780, 135]);  % Position rechts
+
+% Scope-Block.. Zeigt die Signale an.
+add_block('simulink/Sinks/Scope', [modelName '/Scope']);
+set_param([modelName '/Scope'], 'Position', [850, 75, 880, 135]);  % Rechts neben Mux
+
+% Verbindungen zum Scope
+add_line(modelName, 'Relay_U/1', 'Mux/1');  % Signal von Relay_U zum ersten Eingang des Mux
+add_line(modelName, 'Relay_V/1', 'Mux/2');  % Signal von Relay_V zum zweiten
+add_line(modelName, 'Relay_W/1', 'Mux/3');  % Signal von Relay_W zum dritten
+add_line(modelName, 'Mux/1',     'Scope/1');  % Mux Ausgang zum Scope
+
+
+save_system(modelName);
+open_system(modelName);
+disp('Simulink-Modell "psm_stromregelkreis.slx" wurde erfolgreich erstellt.');
+
+
