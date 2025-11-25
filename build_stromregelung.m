@@ -41,3 +41,14 @@ set_param([modelName '/Initialisierung'], 'Position', [50, 400, 80, 420]);
 add_block('simulink/Sources/Constant', [modelName '/ON_OFF']);
 set_param([modelName '/ON_OFF'], 'Value', '0');  % spater auf 1 setzen
 set_param([modelName '/ON_OFF'], 'Position', [50, 450, 80, 470]);
+
+
+% regelkreis für Phase U auf,  vergleicht Soll und Istwert und passt an
+% der Strom soll auf den Sollwert geregelt werden, um den Motor korrekt zu steuern
+
+
+% der Switch wählt zwischen zwei Eingängen basierend auf einem Steuersignal
+% wenn ON_OFF > 0.5, sollwert wird genommen, sonst startwert
+add_block('simulink/Signal Routing/Switch', [modelName '/Switch_U']);
+set_param([modelName '/Switch_U'], 'Threshold', '0.5');  % Schwellwert für Umschaltung
+set_param([modelName '/Switch_U'], 'Position', [200, 50, 230, 80]);
