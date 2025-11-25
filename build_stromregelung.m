@@ -31,3 +31,13 @@ set_param([modelName '/IV_SOLL'], 'Position', [50, 300, 80, 320]);
 add_block('simulink/Sources/Constant', [modelName '/IW_SOLL']);  %  W
 set_param([modelName '/IW_SOLL'], 'Value', '-0.5');  % auch negativ
 set_param([modelName '/IW_SOLL'], 'Position', [50, 350, 80, 370]);
+
+% Startwert, der verwendet wird, wenn der Regler aus ist.
+add_block('simulink/Sources/Constant', [modelName '/Initialisierung']);
+set_param([modelName '/Initialisierung'], 'Value', '0');  % Start bei 0
+set_param([modelName '/Initialisierung'], 'Position', [50, 400, 80, 420]);
+
+% ON/OFF Schalter, um den Regler ein oder auszuschalten... 0 = aus, 1 = an.
+add_block('simulink/Sources/Constant', [modelName '/ON_OFF']);
+set_param([modelName '/ON_OFF'], 'Value', '0');  % spater auf 1 setzen
+set_param([modelName '/ON_OFF'], 'Position', [50, 450, 80, 470]);
