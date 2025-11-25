@@ -37,287 +37,407 @@ R = 1.0;   % Widerstand in Ohm
 L = 0.01;  % Induktivität in Henry
 Udc = 10;  % DC-Link Spannung in Volt
 
+%% dq-Transformationsparameter (NEU - Aufgabe 4.2)
+iq_soll = 1.0;      % Drehmoment-Sollstrom in A (entspricht Drehmoment)
+f_elektrisch = 10;  % Elektrische Frequenz in Hz (Drehfeld-Frequenz)
+omega = 2*pi*f_elektrisch;  % Winkelgeschwindigkeit in rad/s
 
-% sollstrom Vorgabe und ON/OFF .. Konstanten
-add_block('simulink/Sources/Constant', [modelName '/IU_SOLL']);  % Sollwert für Phase U
-set_param([modelName '/IU_SOLL'], 'Value', '1');  % 1 Ampere 
-set_param([modelName '/IU_SOLL'], 'Position', [50, 250, 80, 270]);
+%% ========================================================================
+%% dq → αβ → abc TRANSFORMATION (Aufgabe 4.2)
+%% ========================================================================
+% Statt fester Sollströme erzeugen wir sie aus iq und Winkel γ
+% Dies simuliert feldorientierte Regelung (FOC)
 
-add_block('simulink/Sources/Constant', [modelName '/IV_SOLL']);  %  V
-set_param([modelName '/IV_SOLL'], 'Value', '-0.5');  % Negativer für symmetrische Drehstrom
-set_param([modelName '/IV_SOLL'], 'Position', [50, 300, 80, 320]);
+% Winkel γ (Rampe für rotierendes Drehfeld)
+add_block('simulink/Sources/Ramp', [modelName '/Gamma']);
+set_param([modelName '/Gamma'], 'Slope', num2str(omega));
+set_param([modelName '/Gamma'], 'InitialOutput', '0');
+set_param([modelName '/Gamma'], 'Position', [50, 50, 80, 80]);
 
-add_block('simulink/Sources/Constant', [modelName '/IW_SOLL']);  %  W
-set_param([modelName '/IW_SOLL'], 'Value', '-0.5');  % auch negativ
-set_param([modelName '/IW_SOLL'], 'Position', [50, 350, 80, 370]);
+% iq Sollstrom (Drehmoment-Vorgabe)
+add_block('simulink/Sources/Constant', [modelName '/iq_soll']);
+set_param([modelName '/iq_soll'], 'Value', num2str(iq_soll));
+set_param([modelName '/iq_soll'], 'Position', [50, 100, 80, 130]);
+
+% sin(γ) und cos(γ) für Transformation
+add_block('simulink/Math Operations/Trigonometric Function', [modelName '/sin_gamma']);
+set_param([modelName '/sin_gamma'], 'Operator', 'sin');
+set_param([modelName '/sin_gamma'], 'Position', [120, 40, 150, 70]);
+
+add_block('simulink/Math Operations/Trigonometric Function', [modelName '/cos_gamma']);
+set_param([modelName '/cos_gamma'], 'Operator', 'cos');
+set_param([modelName '/cos_gamma'], 'Position', [120, 80, 150, 110]);
+
+% Negation für sin (weil iα = -iq·sin(γ))
+add_block('simulink/Math Operations/Gain', [modelName '/neg_sin']);
+set_param([modelName '/neg_sin'], 'Gain', '-1');
+set_param([modelName '/neg_sin'], 'Position', [180, 40, 210, 70]);
+
+% Multiplikation: iα = -iq·sin(γ)
+add_block('simulink/Math Operations/Product', [modelName '/prod_alpha']);
+set_param([modelName '/prod_alpha'], 'Inputs', '2');
+set_param([modelName '/prod_alpha'], 'Position', [240, 50, 270, 80]);
+
+% Multiplikation: iβ = iq·cos(γ)
+add_block('simulink/Math Operations/Product', [modelName '/prod_beta']);
+set_param([modelName '/prod_beta'], 'Inputs', '2');
+set_param([modelName '/prod_beta'], 'Position', [240, 100, 270, 130]);
+
+% αβ → abc Transformation
+% iU = iα
+add_block('simulink/Math Operations/Gain', [modelName '/IU_SOLL']);
+set_param([modelName '/IU_SOLL'], 'Gain', '1');
+set_param([modelName '/IU_SOLL'], 'Position', [320, 50, 350, 80]);
+
+% iV = -0.5·iα + √3/2·iβ
+% Zuerst iα skalieren
+add_block('simulink/Math Operations/Gain', [modelName '/alpha_V']);
+set_param([modelName '/alpha_V'], 'Gain', '-0.5');
+set_param([modelName '/alpha_V'], 'Position', [320, 150, 350, 180]);
+
+% iβ skalieren
+add_block('simulink/Math Operations/Gain', [modelName '/beta_V']);
+set_param([modelName '/beta_V'], 'Gain', num2str(sqrt(3)/2));
+set_param([modelName '/beta_V'], 'Position', [320, 190, 350, 220]);
+
+% Summieren für iV
+add_block('simulink/Math Operations/Sum', [modelName '/IV_SOLL']);
+set_param([modelName '/IV_SOLL'], 'Inputs', '++');
+set_param([modelName '/IV_SOLL'], 'Position', [380, 165, 410, 195]);
+
+% iW = -0.5·iα - √3/2·iβ
+% iα skalieren (gleich wie für V)
+add_block('simulink/Math Operations/Gain', [modelName '/alpha_W']);
+set_param([modelName '/alpha_W'], 'Gain', '-0.5');
+set_param([modelName '/alpha_W'], 'Position', [320, 250, 350, 280]);
+
+% iβ skalieren (negativ)
+add_block('simulink/Math Operations/Gain', [modelName '/beta_W']);
+set_param([modelName '/beta_W'], 'Gain', num2str(-sqrt(3)/2));
+set_param([modelName '/beta_W'], 'Position', [320, 290, 350, 320]);
+
+% Summieren für iW
+add_block('simulink/Math Operations/Sum', [modelName '/IW_SOLL']);
+set_param([modelName '/IW_SOLL'], 'Inputs', '++');
+set_param([modelName '/IW_SOLL'], 'Position', [380, 265, 410, 295]);
+
+% Verbindungen für dq-Transformation
+add_line(modelName, 'Gamma/1', 'sin_gamma/1');
+add_line(modelName, 'Gamma/1', 'cos_gamma/1');
+add_line(modelName, 'sin_gamma/1', 'neg_sin/1');
+add_line(modelName, 'neg_sin/1', 'prod_alpha/1');
+add_line(modelName, 'iq_soll/1', 'prod_alpha/2');
+add_line(modelName, 'iq_soll/1', 'prod_beta/1');
+add_line(modelName, 'cos_gamma/1', 'prod_beta/2');
+
+% iα und iβ zu abc
+add_line(modelName, 'prod_alpha/1', 'IU_SOLL/1');
+add_line(modelName, 'prod_alpha/1', 'alpha_V/1');
+add_line(modelName, 'prod_alpha/1', 'alpha_W/1');
+add_line(modelName, 'prod_beta/1', 'beta_V/1');
+add_line(modelName, 'prod_beta/1', 'beta_W/1');
+add_line(modelName, 'alpha_V/1', 'IV_SOLL/1');
+add_line(modelName, 'beta_V/1', 'IV_SOLL/2');
+add_line(modelName, 'alpha_W/1', 'IW_SOLL/1');
+add_line(modelName, 'beta_W/1', 'IW_SOLL/2');
+
+%% ========================================================================
+%% STEUERUNGS-KONSTANTEN
+%% ========================================================================
 
 % Startwert, der verwendet wird, wenn der Regler aus ist.
 add_block('simulink/Sources/Constant', [modelName '/Initialisierung']);
 set_param([modelName '/Initialisierung'], 'Value', '0');  % Start bei 0
-set_param([modelName '/Initialisierung'], 'Position', [50, 400, 80, 420]);
+set_param([modelName '/Initialisierung'], 'Position', [50, 350, 80, 370]);
 
 % ON/OFF Schalter, um den Regler ein oder auszuschalten... 0 = aus, 1 = an.
 add_block('simulink/Sources/Constant', [modelName '/ON_OFF']);
 set_param([modelName '/ON_OFF'], 'Value', '1');  % Regler eingeschaltet
-set_param([modelName '/ON_OFF'], 'Position', [50, 450, 80, 470]);
+set_param([modelName '/ON_OFF'], 'Position', [50, 400, 80, 430]);
 
+%% ========================================================================
+%% PHASE U - STROMREGELKREIS
+%% ========================================================================
 
-% regelkreis für Phase U auf,  vergleicht Soll und Istwert und passt an
-% der Strom soll auf den Sollwert geregelt werden, um den Motor korrekt zu steuern
-
-
-% der Switch wählt zwischen zwei Eingängen basierend auf einem Steuersignal
-% wenn ON_OFF > 0.5, sollwert wird genommen, sonst startwert
+% Switch: Wählt zwischen transformiertem Sollwert und Initialisierung
 add_block('simulink/Signal Routing/Switch', [modelName '/Switch_U']);
-set_param([modelName '/Switch_U'], 'Threshold', '0.5');  % Schwellwert für Umschaltung
-set_param([modelName '/Switch_U'], 'Position', [200, 50, 230, 80]);
+set_param([modelName '/Switch_U'], 'Threshold', '0.5');
+set_param([modelName '/Switch_U'], 'Position', [450, 50, 480, 80]);
 
-%% RL-Motormodell für Phase U (Rückkopplung)
-% Spannung von Relay -> RL-Modell -> Strom gemessen -> zurück zum Regler
+% Fehlerbildung: Soll - Ist
+add_block('simulink/Math Operations/Sum', [modelName '/Sum_U']);
+set_param([modelName '/Sum_U'], 'Inputs', '+-');
+set_param([modelName '/Sum_U'], 'Position', [520, 50, 550, 80]);
 
-% Sättigungsfunktion für Spannungsbegrenzung (±Udc)
+% Zweipunktregler (Hysterese-Relay)
+add_block('simulink/Discontinuities/Relay', [modelName '/Relay_U']);
+set_param([modelName '/Relay_U'], 'OnSwitchValue', '0.01');
+set_param([modelName '/Relay_U'], 'OffSwitchValue', '-0.01');
+set_param([modelName '/Relay_U'], 'OnOutputValue', '1');
+set_param([modelName '/Relay_U'], 'OffOutputValue', '-1');
+set_param([modelName '/Relay_U'], 'Position', [590, 50, 620, 80]);
+
+% Spannungsbegrenzung (±Udc)
 add_block('simulink/Discontinuities/Saturation', [modelName '/Sat_U']);
 set_param([modelName '/Sat_U'], 'UpperLimit', 'Udc');
 set_param([modelName '/Sat_U'], 'LowerLimit', '-Udc');
-set_param([modelName '/Sat_U'], 'Position', [550, 75, 580, 105]);
+set_param([modelName '/Sat_U'], 'Position', [660, 50, 690, 80]);
 
-% Widerstandsspannungsabfall: U_R = R * I
-add_block('simulink/Math Operations/Gain', [modelName '/R_U']);
-set_param([modelName '/R_U'], 'Gain', 'R');
-set_param([modelName '/R_U'], 'Position', [900, 150, 930, 180]);
+% Gate Output
+add_block('simulink/Sinks/Out1', [modelName '/U_gate']);
+set_param([modelName '/U_gate'], 'Position', [730, 55, 760, 75]);
 
-% Spannungsdifferenz: U_L = U_in - U_R
+%% RL-Motormodell Phase U (geschlossener Regelkreis)
 add_block('simulink/Math Operations/Sum', [modelName '/Sum_Motor_U']);
 set_param([modelName '/Sum_Motor_U'], 'Inputs', '+-');
-set_param([modelName '/Sum_Motor_U'], 'Position', [1000, 75, 1030, 105]);
+set_param([modelName '/Sum_Motor_U'], 'Position', [900, 50, 930, 80]);
 
-% Stromänderung: di/dt = U_L / L
 add_block('simulink/Math Operations/Gain', [modelName '/InvL_U']);
 set_param([modelName '/InvL_U'], 'Gain', '1/L');
-set_param([modelName '/InvL_U'], 'Position', [1050, 75, 1080, 105]);
+set_param([modelName '/InvL_U'], 'Position', [970, 50, 1000, 80]);
 
-% Integration: I = integral(di/dt)
 add_block('simulink/Continuous/Integrator', [modelName '/Integrator_U']);
 set_param([modelName '/Integrator_U'], 'InitialCondition', '0');
-set_param([modelName '/Integrator_U'], 'Position', [1100, 75, 1130, 105]);
+set_param([modelName '/Integrator_U'], 'Position', [1040, 50, 1070, 80]);
 
-% Gemessener Strom (mit Normierung)
 add_block('simulink/Math Operations/Gain', [modelName '/K_U']);
-set_param([modelName '/K_U'], 'Gain', '1');  % Normierungsfaktor (angepasst)
-set_param([modelName '/K_U'], 'Position', [1150, 75, 1180, 105]);
+set_param([modelName '/K_U'], 'Gain', '1');
+set_param([modelName '/K_U'], 'Position', [1110, 50, 1140, 80]);
 
-% fehler berechnung .. also soll - ist
-% jenachdem wie weit man vom sollwert entfernt ist, regelt man
-add_block('simulink/Math Operations/Sum', [modelName '/Sum_U']);
-set_param([modelName '/Sum_U'], 'Inputs', '+-');  % Plus und Minus: erster Eingang +, zweiter -
-set_param([modelName '/Sum_U'], 'Position', [350, 75, 380, 105]);
+add_block('simulink/Math Operations/Gain', [modelName '/R_U']);
+set_param([modelName '/R_U'], 'Gain', 'R');
+set_param([modelName '/R_U'], 'Position', [820, 120, 850, 150]);
 
-% zweipunktregler (Relay)
-% nur zwei Zustände: +Udc oder -Udc (PWM-ähnlich für Motorsteuerung)
-add_block('simulink/Discontinuities/Relay', [modelName '/Relay_U']);
-set_param([modelName '/Relay_U'], 'OnSwitchValue', '0.01');   % Schwellwert für Umschalten nach oben
-set_param([modelName '/Relay_U'], 'OffSwitchValue', '-0.01'); % Schwellwert für Umschalten nach unten
-set_param([modelName '/Relay_U'], 'OnOutputValue', '1');      % Ausgang wenn ON
-set_param([modelName '/Relay_U'], 'OffOutputValue', '-1');    % Ausgang wenn OFF
-set_param([modelName '/Relay_U'], 'Position', [450, 75, 480, 105]);
+% Verbindungen Phase U
+add_line(modelName, 'IU_SOLL/1', 'Switch_U/1');
+add_line(modelName, 'ON_OFF/1', 'Switch_U/2');
+add_line(modelName, 'Initialisierung/1', 'Switch_U/3');
+add_line(modelName, 'Switch_U/1', 'Sum_U/1');
+add_line(modelName, 'K_U/1', 'Sum_U/2');
+add_line(modelName, 'Sum_U/1', 'Relay_U/1');
+add_line(modelName, 'Relay_U/1', 'Sat_U/1');
+add_line(modelName, 'Sat_U/1', 'U_gate/1');
 
+% RL-Motormodell
+add_line(modelName, 'Sat_U/1', 'Sum_Motor_U/1');
+add_line(modelName, 'R_U/1', 'Sum_Motor_U/2');
+add_line(modelName, 'Sum_Motor_U/1', 'InvL_U/1');
+add_line(modelName, 'InvL_U/1', 'Integrator_U/1');
+add_line(modelName, 'Integrator_U/1', 'K_U/1');
+add_line(modelName, 'Integrator_U/1', 'R_U/1');
 
-% der Ausgang des Reglers.. Gate Signal für die Phase U (steuert den Stromfluss)
-add_block('simulink/Sinks/Out1', [modelName '/U_gate']);
-set_param([modelName '/U_gate'], 'Position', [650, 75, 680, 105]);
+%% ========================================================================
+%% PHASE V - STROMREGELKREIS
+%% ========================================================================
 
-% Verbindungen für Phase U (geschlossener Regelkreis)
-
-% Regelkreis
-add_line(modelName, 'IU_SOLL/1',        'Switch_U/1'); % Sollwert zu Switch
-add_line(modelName, 'ON_OFF/1',         'Switch_U/2'); % ON/OFF steuert Switch
-add_line(modelName, 'Initialisierung/1','Switch_U/3'); % Initialisierung zu Switch
-add_line(modelName, 'Switch_U/1', 'Sum_U/1');          % Sollwert zu Sum (+)
-add_line(modelName, 'K_U/1',      'Sum_U/2');          % Gemessener Strom zu Sum (-)
-add_line(modelName, 'Sum_U/1',    'Relay_U/1');        % Fehler zu Relay
-add_line(modelName, 'Relay_U/1',  'Sat_U/1');          % Relay zu Sättigung
-add_line(modelName, 'Sat_U/1',    'U_gate/1');         % Spannung zu Gate-Ausgang
-
-% RL-Motormodell (Rückkopplung)
-add_line(modelName, 'Sat_U/1',         'Sum_Motor_U/1'); % Eingangsspannung
-add_line(modelName, 'R_U/1',           'Sum_Motor_U/2'); % Widerstandsspannung (-)
-add_line(modelName, 'Sum_Motor_U/1',   'InvL_U/1');      % U_L zu 1/L
-add_line(modelName, 'InvL_U/1',        'Integrator_U/1'); % di/dt zu Integrator
-add_line(modelName, 'Integrator_U/1',  'K_U/1');         % Strom zu Normierung
-add_line(modelName, 'Integrator_U/1',  'R_U/1');         % Strom auch zu R (Feedback)
-
-%% Phase V - identisch zu Phase U
 add_block('simulink/Signal Routing/Switch', [modelName '/Switch_V']);
 set_param([modelName '/Switch_V'], 'Threshold', '0.5');
-set_param([modelName '/Switch_V'], 'Position', [200, 200, 230, 230]);
+set_param([modelName '/Switch_V'], 'Position', [450, 170, 480, 200]);
 
 add_block('simulink/Math Operations/Sum', [modelName '/Sum_V']);
 set_param([modelName '/Sum_V'], 'Inputs', '+-');
-set_param([modelName '/Sum_V'], 'Position', [350, 225, 380, 255]);
+set_param([modelName '/Sum_V'], 'Position', [520, 170, 550, 200]);
 
 add_block('simulink/Discontinuities/Relay', [modelName '/Relay_V']);
 set_param([modelName '/Relay_V'], 'OnSwitchValue', '0.01');
 set_param([modelName '/Relay_V'], 'OffSwitchValue', '-0.01');
 set_param([modelName '/Relay_V'], 'OnOutputValue', '1');
 set_param([modelName '/Relay_V'], 'OffOutputValue', '-1');
-set_param([modelName '/Relay_V'], 'Position', [450, 225, 480, 255]);
+set_param([modelName '/Relay_V'], 'Position', [590, 170, 620, 200]);
 
 add_block('simulink/Discontinuities/Saturation', [modelName '/Sat_V']);
 set_param([modelName '/Sat_V'], 'UpperLimit', 'Udc');
 set_param([modelName '/Sat_V'], 'LowerLimit', '-Udc');
-set_param([modelName '/Sat_V'], 'Position', [550, 225, 580, 255]);
+set_param([modelName '/Sat_V'], 'Position', [660, 170, 690, 200]);
 
 add_block('simulink/Sinks/Out1', [modelName '/V_gate']);
-set_param([modelName '/V_gate'], 'Position', [650, 225, 680, 255]);
-
-% RL-Motormodell Phase V
-add_block('simulink/Math Operations/Gain', [modelName '/R_V']);
-set_param([modelName '/R_V'], 'Gain', 'R');
-set_param([modelName '/R_V'], 'Position', [900, 300, 930, 330]);
+set_param([modelName '/V_gate'], 'Position', [730, 175, 760, 195]);
 
 add_block('simulink/Math Operations/Sum', [modelName '/Sum_Motor_V']);
 set_param([modelName '/Sum_Motor_V'], 'Inputs', '+-');
-set_param([modelName '/Sum_Motor_V'], 'Position', [1000, 225, 1030, 255]);
+set_param([modelName '/Sum_Motor_V'], 'Position', [900, 170, 930, 200]);
 
 add_block('simulink/Math Operations/Gain', [modelName '/InvL_V']);
 set_param([modelName '/InvL_V'], 'Gain', '1/L');
-set_param([modelName '/InvL_V'], 'Position', [1050, 225, 1080, 255]);
+set_param([modelName '/InvL_V'], 'Position', [970, 170, 1000, 200]);
 
 add_block('simulink/Continuous/Integrator', [modelName '/Integrator_V']);
 set_param([modelName '/Integrator_V'], 'InitialCondition', '0');
-set_param([modelName '/Integrator_V'], 'Position', [1100, 225, 1130, 255]);
+set_param([modelName '/Integrator_V'], 'Position', [1040, 170, 1070, 200]);
 
 add_block('simulink/Math Operations/Gain', [modelName '/K_V']);
 set_param([modelName '/K_V'], 'Gain', '1');
-set_param([modelName '/K_V'], 'Position', [1150, 225, 1180, 255]);
+set_param([modelName '/K_V'], 'Position', [1110, 170, 1140, 200]);
 
-% Verbindungen für Phase V
-add_line(modelName, 'IV_SOLL/1',        'Switch_V/1');
-add_line(modelName, 'ON_OFF/1',         'Switch_V/2');
-add_line(modelName, 'Initialisierung/1','Switch_V/3');
-add_line(modelName, 'Switch_V/1',       'Sum_V/1');
-add_line(modelName, 'K_V/1',            'Sum_V/2');
-add_line(modelName, 'Sum_V/1',          'Relay_V/1');
-add_line(modelName, 'Relay_V/1',        'Sat_V/1');
-add_line(modelName, 'Sat_V/1',          'V_gate/1');
+add_block('simulink/Math Operations/Gain', [modelName '/R_V']);
+set_param([modelName '/R_V'], 'Gain', 'R');
+set_param([modelName '/R_V'], 'Position', [820, 240, 850, 270]);
 
-add_line(modelName, 'Sat_V/1',          'Sum_Motor_V/1');
-add_line(modelName, 'R_V/1',            'Sum_Motor_V/2');
-add_line(modelName, 'Sum_Motor_V/1',    'InvL_V/1');
-add_line(modelName, 'InvL_V/1',         'Integrator_V/1');
-add_line(modelName, 'Integrator_V/1',   'K_V/1');
-add_line(modelName, 'Integrator_V/1',   'R_V/1');
+% Verbindungen Phase V
+add_line(modelName, 'IV_SOLL/1', 'Switch_V/1');
+add_line(modelName, 'ON_OFF/1', 'Switch_V/2');
+add_line(modelName, 'Initialisierung/1', 'Switch_V/3');
+add_line(modelName, 'Switch_V/1', 'Sum_V/1');
+add_line(modelName, 'K_V/1', 'Sum_V/2');
+add_line(modelName, 'Sum_V/1', 'Relay_V/1');
+add_line(modelName, 'Relay_V/1', 'Sat_V/1');
+add_line(modelName, 'Sat_V/1', 'V_gate/1');
 
-%% Phase W - identisch zu Phase U und V
+add_line(modelName, 'Sat_V/1', 'Sum_Motor_V/1');
+add_line(modelName, 'R_V/1', 'Sum_Motor_V/2');
+add_line(modelName, 'Sum_Motor_V/1', 'InvL_V/1');
+add_line(modelName, 'InvL_V/1', 'Integrator_V/1');
+add_line(modelName, 'Integrator_V/1', 'K_V/1');
+add_line(modelName, 'Integrator_V/1', 'R_V/1');
+
+%% ========================================================================
+%% PHASE W - STROMREGELKREIS
+%% ========================================================================
+
 add_block('simulink/Signal Routing/Switch', [modelName '/Switch_W']);
 set_param([modelName '/Switch_W'], 'Threshold', '0.5');
-set_param([modelName '/Switch_W'], 'Position', [200, 350, 230, 380]);
+set_param([modelName '/Switch_W'], 'Position', [450, 290, 480, 320]);
 
 add_block('simulink/Math Operations/Sum', [modelName '/Sum_W']);
 set_param([modelName '/Sum_W'], 'Inputs', '+-');
-set_param([modelName '/Sum_W'], 'Position', [350, 375, 380, 405]);
+set_param([modelName '/Sum_W'], 'Position', [520, 290, 550, 320]);
 
 add_block('simulink/Discontinuities/Relay', [modelName '/Relay_W']);
 set_param([modelName '/Relay_W'], 'OnSwitchValue', '0.01');
 set_param([modelName '/Relay_W'], 'OffSwitchValue', '-0.01');
 set_param([modelName '/Relay_W'], 'OnOutputValue', '1');
 set_param([modelName '/Relay_W'], 'OffOutputValue', '-1');
-set_param([modelName '/Relay_W'], 'Position', [450, 375, 480, 405]);
+set_param([modelName '/Relay_W'], 'Position', [590, 290, 620, 320]);
 
 add_block('simulink/Discontinuities/Saturation', [modelName '/Sat_W']);
 set_param([modelName '/Sat_W'], 'UpperLimit', 'Udc');
 set_param([modelName '/Sat_W'], 'LowerLimit', '-Udc');
-set_param([modelName '/Sat_W'], 'Position', [550, 375, 580, 405]);
+set_param([modelName '/Sat_W'], 'Position', [660, 290, 690, 320]);
 
 add_block('simulink/Sinks/Out1', [modelName '/W_gate']);
-set_param([modelName '/W_gate'], 'Position', [650, 375, 680, 405]);
-
-% RL-Motormodell Phase W
-add_block('simulink/Math Operations/Gain', [modelName '/R_W']);
-set_param([modelName '/R_W'], 'Gain', 'R');
-set_param([modelName '/R_W'], 'Position', [900, 450, 930, 480]);
+set_param([modelName '/W_gate'], 'Position', [730, 295, 760, 315]);
 
 add_block('simulink/Math Operations/Sum', [modelName '/Sum_Motor_W']);
 set_param([modelName '/Sum_Motor_W'], 'Inputs', '+-');
-set_param([modelName '/Sum_Motor_W'], 'Position', [1000, 375, 1030, 405]);
+set_param([modelName '/Sum_Motor_W'], 'Position', [900, 290, 930, 320]);
 
 add_block('simulink/Math Operations/Gain', [modelName '/InvL_W']);
 set_param([modelName '/InvL_W'], 'Gain', '1/L');
-set_param([modelName '/InvL_W'], 'Position', [1050, 375, 1080, 405]);
+set_param([modelName '/InvL_W'], 'Position', [970, 290, 1000, 320]);
 
 add_block('simulink/Continuous/Integrator', [modelName '/Integrator_W']);
 set_param([modelName '/Integrator_W'], 'InitialCondition', '0');
-set_param([modelName '/Integrator_W'], 'Position', [1100, 375, 1130, 405]);
+set_param([modelName '/Integrator_W'], 'Position', [1040, 290, 1070, 320]);
 
 add_block('simulink/Math Operations/Gain', [modelName '/K_W']);
 set_param([modelName '/K_W'], 'Gain', '1');
-set_param([modelName '/K_W'], 'Position', [1150, 375, 1180, 405]);
+set_param([modelName '/K_W'], 'Position', [1110, 290, 1140, 320]);
 
-% Verbindungen für Phase W
-add_line(modelName, 'IW_SOLL/1',        'Switch_W/1');
-add_line(modelName, 'ON_OFF/1',         'Switch_W/2');
-add_line(modelName, 'Initialisierung/1','Switch_W/3');
-add_line(modelName, 'Switch_W/1',       'Sum_W/1');
-add_line(modelName, 'K_W/1',            'Sum_W/2');
-add_line(modelName, 'Sum_W/1',          'Relay_W/1');
-add_line(modelName, 'Relay_W/1',        'Sat_W/1');
-add_line(modelName, 'Sat_W/1',          'W_gate/1');
+add_block('simulink/Math Operations/Gain', [modelName '/R_W']);
+set_param([modelName '/R_W'], 'Gain', 'R');
+set_param([modelName '/R_W'], 'Position', [820, 360, 850, 390]);
 
-add_line(modelName, 'Sat_W/1',          'Sum_Motor_W/1');
-add_line(modelName, 'R_W/1',            'Sum_Motor_W/2');
-add_line(modelName, 'Sum_Motor_W/1',    'InvL_W/1');
-add_line(modelName, 'InvL_W/1',         'Integrator_W/1');
-add_line(modelName, 'Integrator_W/1',   'K_W/1');
-add_line(modelName, 'Integrator_W/1',   'R_W/1');
+% Verbindungen Phase W
+add_line(modelName, 'IW_SOLL/1', 'Switch_W/1');
+add_line(modelName, 'ON_OFF/1', 'Switch_W/2');
+add_line(modelName, 'Initialisierung/1', 'Switch_W/3');
+add_line(modelName, 'Switch_W/1', 'Sum_W/1');
+add_line(modelName, 'K_W/1', 'Sum_W/2');
+add_line(modelName, 'Sum_W/1', 'Relay_W/1');
+add_line(modelName, 'Relay_W/1', 'Sat_W/1');
+add_line(modelName, 'Sat_W/1', 'W_gate/1');
 
-%% Scopes für Visualisierung
+add_line(modelName, 'Sat_W/1', 'Sum_Motor_W/1');
+add_line(modelName, 'R_W/1', 'Sum_Motor_W/2');
+add_line(modelName, 'Sum_Motor_W/1', 'InvL_W/1');
+add_line(modelName, 'InvL_W/1', 'Integrator_W/1');
+add_line(modelName, 'Integrator_W/1', 'K_W/1');
+add_line(modelName, 'Integrator_W/1', 'R_W/1');
 
-% Scope 1: Gate-Signale (Spannungen)
+%% ========================================================================
+%% VISUALISIERUNG - SCOPES
+%% ========================================================================
+
+% Scope 1: Sollströme (dq-Transformation)
+add_block('simulink/Signal Routing/Mux', [modelName '/Mux_Soll']);
+set_param([modelName '/Mux_Soll'], 'Inputs', '3');
+set_param([modelName '/Mux_Soll'], 'Position', [450, 440, 480, 500]);
+
+add_block('simulink/Sinks/Scope', [modelName '/Scope_Soll']);
+set_param([modelName '/Scope_Soll'], 'Position', [520, 440, 580, 500]);
+
+add_line(modelName, 'IU_SOLL/1', 'Mux_Soll/1');
+add_line(modelName, 'IV_SOLL/1', 'Mux_Soll/2');
+add_line(modelName, 'IW_SOLL/1', 'Mux_Soll/3');
+add_line(modelName, 'Mux_Soll/1', 'Scope_Soll/1');
+
+% Scope 2: Gate-Signale (Spannungen)
 add_block('simulink/Signal Routing/Mux', [modelName '/Mux_Gates']);
 set_param([modelName '/Mux_Gates'], 'Inputs', '3');
-set_param([modelName '/Mux_Gates'], 'Position', [750, 75, 780, 135]);
+set_param([modelName '/Mux_Gates'], 'Position', [800, 100, 830, 160]);
 
 add_block('simulink/Sinks/Scope', [modelName '/Scope_Gates']);
-set_param([modelName '/Scope_Gates'], 'Position', [820, 75, 880, 135]);
+set_param([modelName '/Scope_Gates'], 'Position', [870, 100, 930, 160]);
 
-add_line(modelName, 'Sat_U/1',      'Mux_Gates/1');
-add_line(modelName, 'Sat_V/1',      'Mux_Gates/2');
-add_line(modelName, 'Sat_W/1',      'Mux_Gates/3');
-add_line(modelName, 'Mux_Gates/1',  'Scope_Gates/1');
+add_line(modelName, 'Sat_U/1', 'Mux_Gates/1');
+add_line(modelName, 'Sat_V/1', 'Mux_Gates/2');
+add_line(modelName, 'Sat_W/1', 'Mux_Gates/3');
+add_line(modelName, 'Mux_Gates/1', 'Scope_Gates/1');
 
-% Scope 2: Gemessene Ströme (zeigt Regelverhalten)
+% Scope 3: Gemessene Ströme (zeigt Regelverhalten)
 add_block('simulink/Signal Routing/Mux', [modelName '/Mux_Currents']);
 set_param([modelName '/Mux_Currents'], 'Inputs', '3');
-set_param([modelName '/Mux_Currents'], 'Position', [1220, 175, 1250, 235]);
+set_param([modelName '/Mux_Currents'], 'Position', [1200, 130, 1230, 190]);
 
 add_block('simulink/Sinks/Scope', [modelName '/Scope_Currents']);
-set_param([modelName '/Scope_Currents'], 'Position', [1280, 175, 1340, 235]);
+set_param([modelName '/Scope_Currents'], 'Position', [1270, 130, 1330, 190]);
 
-add_line(modelName, 'Integrator_U/1',  'Mux_Currents/1');
-add_line(modelName, 'Integrator_V/1',  'Mux_Currents/2');
-add_line(modelName, 'Integrator_W/1',  'Mux_Currents/3');
-add_line(modelName, 'Mux_Currents/1',  'Scope_Currents/1');
+add_line(modelName, 'Integrator_U/1', 'Mux_Currents/1');
+add_line(modelName, 'Integrator_V/1', 'Mux_Currents/2');
+add_line(modelName, 'Integrator_W/1', 'Mux_Currents/3');
+add_line(modelName, 'Mux_Currents/1', 'Scope_Currents/1');
 
 
-%% Simulationsparameter setzen
-set_param(modelName, 'Solver', 'ode45');           % Standard Solver
-set_param(modelName, 'StopTime', '1.0');           % 1 Sekunde Simulation
-set_param(modelName, 'MaxStep', '1e-4');           % Kleine Zeitschritte für Genauigkeit
+%% ========================================================================
+%% SIMULATIONSEINSTELLUNGEN
+%% ========================================================================
+
+set_param(modelName, 'Solver', 'ode45');
+set_param(modelName, 'StopTime', '0.5');  % 0.5 Sekunden (mehrere Perioden bei 10 Hz)
+set_param(modelName, 'MaxStep', '1e-4');
 
 save_system(modelName);
 open_system(modelName);
-disp('Simulink-Modell "psm_stromregelung.slx" mit geschlossenem Regelkreis wurde erfolgreich erstellt!');
+
+disp('═══════════════════════════════════════════════════════════════');
+disp('  Simulink-Modell "psm_stromregelung.slx" erfolgreich erstellt!');
+disp('═══════════════════════════════════════════════════════════════');
 disp(' ');
-disp('Das Modell enthält:');
-disp('  - Drei-Phasen Stromregler mit Zweipunktreglern (Relay)');
-disp('  - RL-Motormodell für jede Phase (geschlossener Regelkreis)');
-disp('  - Scope_Gates: Zeigt die Gate-Spannungen (±10V)');
-disp('  - Scope_Currents: Zeigt die gemessenen Ströme (Regelverhalten)');
+disp('NEU: dq-Transformation implementiert (Aufgabe 4.2)! ✓');
 disp(' ');
-disp('Parameter:');
-fprintf('  R = %.2f Ohm\n', R);
-fprintf('  L = %.4f H\n', L);
-fprintf('  Udc = %.1f V\n', Udc);
+disp('MODELL-STRUKTUR:');
+disp('  1. dq → αβ → abc Transformation (FOC-Sollströme)');
+disp('  2. Drei-Phasen Stromregler mit Hystere-Relay');
+disp('  3. RL-Motormodell (geschlossener Regelkreis)');
+disp(' ');
+disp('PARAMETER:');
+fprintf('  • iq_soll = %.2f A (Drehmoment-Sollstrom)\n', iq_soll);
+fprintf('  • f_elektrisch = %.1f Hz (Drehfeld-Frequenz)\n', f_elektrisch);
+fprintf('  • R = %.2f Ω, L = %.4f H, Udc = %.1f V\n', R, L, Udc);
+disp(' ');
+disp('SCOPES:');
+disp('  • Scope_Soll: Zeigt die transformierten Sollströme iU/iV/iW');
+disp('               → Sinusförmig, 120° phasenverschoben!');
+disp('  • Scope_Gates: Zeigt die Gate-Spannungen (±10V)');
+disp('  • Scope_Currents: Zeigt die gemessenen Ströme');
+disp('               → Sollte den Sollströmen folgen (mit Hysterese)');
+disp(' ');
+disp('ERWARTETES VERHALTEN:');
+disp('  → Die Ströme sollten sinusförmig um 120° phasenverschoben sein');
+disp('  → Ein rotierendes Drehfeld wird simuliert!');
+disp('  → Vergleiche Scope_Soll mit Scope_Currents');
+disp(' ');
+
 
 
 
