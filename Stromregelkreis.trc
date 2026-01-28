@@ -1,0 +1,3821 @@
+-- ****************************************************************************
+--
+--  Trace file: Stromregelkreis.trc
+--
+--  RTI1104 24.2 (02-Nov-2024)
+--  Tue Jan 27 16:36:06 2026
+--
+--  Copyright 2026, dSPACE GmbH. All rights reserved.
+--
+-- ****************************************************************************
+--
+--  Used options:
+--    TRCGenerateVirtualBlocks      = 0
+--    TRCGenerateLabels             = 0
+--    TRCGenerateStates             = 0
+--    TRCGenerateDerivatives        = 0
+--    TRCGenerateParamValues        = 0
+--    TRCGenerateApplicationKeyword = 0
+--    TRCOnlyGlobals                = 0
+--    TRCIsOmitVdOn                 = 0
+--
+--  Trace file format: 3
+
+_author      "RTI1104 24.2 (02-Nov-2024)"
+_description ""
+_gendate     "01/27/2026 04:36:11"
+_genname     "RTI"
+_genversion  "24.2"
+_model       "Stromregelkreis"
+
+_floating_point_type(64,IEEE)
+_integer_type(32)
+
+sampling_period[0]
+{
+    alias:     "HostService"
+    increment: 0.00005
+    unit:      "s"
+    value:     0.00005
+}
+
+struct Stromregelkreis_struct_isB4Cw3Ovpp8VfzP6RUqbD
+{
+    array-incr: 4
+}
+
+    structField0
+    {
+        alias: "OutputPortsWidth"
+        offs:  0
+        type:  int(32)
+    }
+
+
+endstruct
+
+struct Stromregelkreis_struct_dZjXwTiylTPloSUBFpnHJB
+{
+    array-incr: 4
+}
+
+    structField0
+    {
+        alias: "InputPortsWidth"
+        offs:  0
+        type:  int(32)
+    }
+
+
+endstruct
+
+currentTime
+{
+    addr:  0x3e048
+    alias: "currentTime"
+    desc:  "Current simulation time. Increments with execution of Timer Task 1."
+    flags: READONLY
+    type:  float(64,IEEE)*
+    unit:  "s"
+}
+
+msg_last_error_no
+{
+    addr:  0x3d634
+    alias: "errorNumber"
+    desc:  "Error number of last error message (zero if no error)."
+    flags: READONLY
+    type:  uint(32)
+    unit:  "-"
+}
+
+finalTime
+{
+    addr:  0x3e04c
+    alias: "finalTime"
+    desc:  "Simulation stop time. When reached, simState switches to STOP."
+    flags: READONLY
+    type:  float(64,IEEE)*
+    unit:  "s"
+}
+
+modelStepSize
+{
+    addr:  0x3e050
+    alias: "modelStepSize"
+    desc:  "Fixed step size of the model, sample time of Timer Task 1."
+    flags: READONLY
+    type:  float(64,IEEE)
+    unit:  "s"
+}
+
+simState
+{
+    addr:  0x3d4b0
+    alias: "simState"
+    desc:  "Simulation state: STOP=0 PAUSE=1 RUN=2"
+    type:  int(32)
+    unit:  "-"
+}
+
+p_dsts_sum_of_reset_time
+{
+    addr:  0x39ff0
+    alias: "sumOfResetTime"
+    desc:  "Internal variable for summing up reset time."
+    flags: HIDDEN|READONLY
+    type:  float(64,IEEE)*
+    unit:  "s"
+}
+
+group "Model Root"
+
+    group "ab > 1_2_3"
+
+        p_0_Stromregelkreis_real_T_0[70]
+        {
+            addr:  0x3d490
+            alias: "Out1"
+            flags: OUTPUT|READONLY
+            type:  float(64,IEEE)*
+        }
+
+        p_0_Stromregelkreis_real_T_0[76]
+        {
+            addr:  0x3d490
+            alias: "Out2"
+            flags: OUTPUT|READONLY
+            type:  float(64,IEEE)*
+        }
+
+        p_0_Stromregelkreis_real_T_0[71]
+        {
+            addr:  0x3d490
+            alias: "Out3"
+            flags: OUTPUT|READONLY
+            type:  float(64,IEEE)*
+        }
+
+        group "Add"
+        {
+            block: "Sum"
+        }
+
+            p_0_Stromregelkreis_real_T_0[79]
+            {
+                addr:  0x3d490
+                alias: "Out1"
+                flags: OUTPUT|READONLY
+                type:  float(64,IEEE)*
+            }
+
+        endgroup
+
+        group "Add1"
+        {
+            block: "Sum"
+        }
+
+            p_0_Stromregelkreis_real_T_0[74]
+            {
+                addr:  0x3d490
+                alias: "Out1"
+                flags: OUTPUT|READONLY
+                type:  float(64,IEEE)*
+            }
+
+        endgroup
+
+        group "const_iu"
+        {
+            block: "Constant"
+        }
+
+            p_1_Stromregelkreis_real_T_0[33]
+            {
+                addr:  0x3d498
+                alias: "Value"
+                flags: PARAM
+                type:  float(64,IEEE)*
+            }
+
+        endgroup
+
+        group "const_iv"
+        {
+            block: "Constant"
+        }
+
+            p_1_Stromregelkreis_real_T_0[52]
+            {
+                addr:  0x3d498
+                alias: "Value"
+                flags: PARAM
+                type:  float(64,IEEE)*
+            }
+
+        endgroup
+
+        group "const_iw"
+        {
+            block: "Constant"
+        }
+
+            p_1_Stromregelkreis_real_T_0[59]
+            {
+                addr:  0x3d498
+                alias: "Value"
+                flags: PARAM
+                type:  float(64,IEEE)*
+            }
+
+        endgroup
+
+        group "Constant"
+        {
+            block: "Constant"
+        }
+
+            p_1_Stromregelkreis_real_T_0[53]
+            {
+                addr:  0x3d498
+                alias: "Value"
+                flags: PARAM
+                type:  float(64,IEEE)*
+            }
+
+        endgroup
+
+        group "Constant1"
+        {
+            block: "Constant"
+        }
+
+            p_1_Stromregelkreis_real_T_0[54]
+            {
+                addr:  0x3d498
+                alias: "Value"
+                flags: PARAM
+                type:  float(64,IEEE)*
+            }
+
+        endgroup
+
+        group "Constant2"
+        {
+            block: "Constant"
+        }
+
+            p_1_Stromregelkreis_real_T_0[60]
+            {
+                addr:  0x3d498
+                alias: "Value"
+                flags: PARAM
+                type:  float(64,IEEE)*
+            }
+
+        endgroup
+
+        group "Constant3"
+        {
+            block: "Constant"
+        }
+
+            p_1_Stromregelkreis_real_T_0[61]
+            {
+                addr:  0x3d498
+                alias: "Value"
+                flags: PARAM
+                type:  float(64,IEEE)*
+            }
+
+        endgroup
+
+        group "Gain"
+        {
+            block: "Gain"
+        }
+
+            p_1_Stromregelkreis_real_T_0[30]
+            {
+                addr:  0x3d498
+                alias: "Gain"
+                flags: PARAM
+                type:  float(64,IEEE)*
+            }
+
+            p_0_Stromregelkreis_real_T_0[73]
+            {
+                addr:  0x3d490
+                alias: "Out1"
+                flags: OUTPUT|READONLY
+                type:  float(64,IEEE)*
+            }
+
+        endgroup
+
+        group "Gain1"
+        {
+            block: "Gain"
+        }
+
+            p_1_Stromregelkreis_real_T_0[28]
+            {
+                addr:  0x3d498
+                alias: "Gain"
+                flags: PARAM
+                type:  float(64,IEEE)*
+            }
+
+            p_0_Stromregelkreis_real_T_0[78]
+            {
+                addr:  0x3d490
+                alias: "Out1"
+                flags: OUTPUT|READONLY
+                type:  float(64,IEEE)*
+            }
+
+        endgroup
+
+        group "iu_sw"
+        {
+            block: "Switch"
+        }
+
+            p_0_Stromregelkreis_real_T_0[70]
+            {
+                addr:  0x3d490
+                alias: "Out1"
+                flags: OUTPUT|READONLY
+                type:  float(64,IEEE)*
+            }
+
+            p_1_Stromregelkreis_real_T_0[32]
+            {
+                addr:  0x3d498
+                alias: "Threshold"
+                flags: PARAM
+                type:  float(64,IEEE)*
+            }
+
+        endgroup
+
+        group "iv_sw"
+        {
+            block: "Switch"
+        }
+
+            p_0_Stromregelkreis_real_T_0[76]
+            {
+                addr:  0x3d490
+                alias: "Out1"
+                flags: OUTPUT|READONLY
+                type:  float(64,IEEE)*
+            }
+
+            p_1_Stromregelkreis_real_T_0[29]
+            {
+                addr:  0x3d498
+                alias: "Threshold"
+                flags: PARAM
+                type:  float(64,IEEE)*
+            }
+
+        endgroup
+
+        group "iw_sw"
+        {
+            block: "Switch"
+        }
+
+            p_0_Stromregelkreis_real_T_0[71]
+            {
+                addr:  0x3d490
+                alias: "Out1"
+                flags: OUTPUT|READONLY
+                type:  float(64,IEEE)*
+            }
+
+            p_1_Stromregelkreis_real_T_0[31]
+            {
+                addr:  0x3d498
+                alias: "Threshold"
+                flags: PARAM
+                type:  float(64,IEEE)*
+            }
+
+        endgroup
+
+        group "Product"
+        {
+            block: "Product"
+        }
+
+            p_0_Stromregelkreis_real_T_0[80]
+            {
+                addr:  0x3d490
+                alias: "Out1"
+                flags: OUTPUT|READONLY
+                type:  float(64,IEEE)*
+            }
+
+        endgroup
+
+        group "Product1"
+        {
+            block: "Product"
+        }
+
+            p_0_Stromregelkreis_real_T_0[77]
+            {
+                addr:  0x3d490
+                alias: "Out1"
+                flags: OUTPUT|READONLY
+                type:  float(64,IEEE)*
+            }
+
+        endgroup
+
+        group "Product2"
+        {
+            block: "Product"
+        }
+
+            p_0_Stromregelkreis_real_T_0[75]
+            {
+                addr:  0x3d490
+                alias: "Out1"
+                flags: OUTPUT|READONLY
+                type:  float(64,IEEE)*
+            }
+
+        endgroup
+
+        group "Product3"
+        {
+            block: "Product"
+        }
+
+            p_0_Stromregelkreis_real_T_0[72]
+            {
+                addr:  0x3d490
+                alias: "Out1"
+                flags: OUTPUT|READONLY
+                type:  float(64,IEEE)*
+            }
+
+        endgroup
+
+        group "thresh_sw"
+        {
+            block: "Constant"
+        }
+
+            p_1_Stromregelkreis_real_T_0[34]
+            {
+                addr:  0x3d498
+                alias: "Value"
+                flags: PARAM
+                type:  float(64,IEEE)*
+            }
+
+        endgroup
+
+    endgroup
+
+    group "Add2"
+    {
+        block: "Sum"
+    }
+
+        p_0_Stromregelkreis_real_T_0[17]
+        {
+            addr:  0x3d490
+            alias: "Out1"
+            flags: OUTPUT|READONLY
+            type:  float(64,IEEE)*
+        }
+
+    endgroup
+
+    group "dq>ab"
+
+        p_0_Stromregelkreis_real_T_0[23]
+        {
+            addr:  0x3d490
+            alias: "Out1"
+            flags: OUTPUT|READONLY
+            type:  float(64,IEEE)*
+        }
+
+        p_0_Stromregelkreis_real_T_0[29]
+        {
+            addr:  0x3d490
+            alias: "Out2"
+            flags: OUTPUT|READONLY
+            type:  float(64,IEEE)*
+        }
+
+        group "Cos"
+        {
+            block: "Trigonometry"
+        }
+
+            p_0_Stromregelkreis_real_T_0[28]
+            {
+                addr:  0x3d490
+                alias: "Out1"
+                flags: OUTPUT|READONLY
+                type:  float(64,IEEE)*
+            }
+
+        endgroup
+
+        group "Gain"
+        {
+            block: "Gain"
+        }
+
+            p_1_Stromregelkreis_real_T_0[41]
+            {
+                addr:  0x3d498
+                alias: "Gain"
+                flags: PARAM
+                type:  float(64,IEEE)*
+            }
+
+            p_0_Stromregelkreis_real_T_0[14]
+            {
+                addr:  0x3d490
+                alias: "Out1"
+                flags: OUTPUT|READONLY
+                type:  float(64,IEEE)*
+            }
+
+        endgroup
+
+        group "ia"
+        {
+            block: "Product"
+        }
+
+            p_0_Stromregelkreis_real_T_0[23]
+            {
+                addr:  0x3d490
+                alias: "Out1"
+                flags: OUTPUT|READONLY
+                type:  float(64,IEEE)*
+            }
+
+        endgroup
+
+        group "ib"
+        {
+            block: "Product"
+        }
+
+            p_0_Stromregelkreis_real_T_0[29]
+            {
+                addr:  0x3d490
+                alias: "Out1"
+                flags: OUTPUT|READONLY
+                type:  float(64,IEEE)*
+            }
+
+        endgroup
+
+        group "Sin"
+        {
+            block: "Trigonometry"
+        }
+
+            p_0_Stromregelkreis_real_T_0[22]
+            {
+                addr:  0x3d490
+                alias: "Out1"
+                flags: OUTPUT|READONLY
+                type:  float(64,IEEE)*
+            }
+
+        endgroup
+
+    endgroup
+
+    group "Drehzahl in 1//min"
+    {
+        block: "Gain"
+    }
+
+        p_0_Stromregelkreis_real_T_0[2]
+        {
+            addr:  0x3d490
+            alias: "Out1"
+            flags: OUTPUT|READONLY
+            type:  float(64,IEEE)*
+        }
+
+        trcref0_ta
+        {
+            alias:    "ta"
+            refgroup: "/Tunable Parameters"
+            refvar:   "ta"
+        }
+
+    endgroup
+
+    group "drehzahlregler"
+
+        p_0_Stromregelkreis_real_T_0[52]
+        {
+            addr:  0x3d490
+            alias: "y"
+            flags: OUTPUT|READONLY
+            type:  float(64,IEEE)*
+        }
+
+        group "pid"
+
+            p_1_Stromregelkreis_real_T_0[2]
+            {
+                addr:  0x3d498
+                alias: "D"
+                flags: PARAM
+                type:  float(64,IEEE)*
+            }
+
+            p_1_Stromregelkreis_real_T_0[4]
+            {
+                addr:  0x3d498
+                alias: "I"
+                flags: PARAM
+                type:  float(64,IEEE)*
+            }
+
+            p_1_Stromregelkreis_real_T_0[6]
+            {
+                addr:  0x3d498
+                alias: "InitialConditionForFilter"
+                flags: PARAM
+                type:  float(64,IEEE)*
+            }
+
+            p_1_Stromregelkreis_real_T_0[8]
+            {
+                addr:  0x3d498
+                alias: "InitialConditionForIntegrator"
+                flags: PARAM
+                type:  float(64,IEEE)*
+            }
+
+            p_1_Stromregelkreis_real_T_0[11]
+            {
+                addr:  0x3d498
+                alias: "Kb"
+                flags: PARAM
+                type:  float(64,IEEE)*
+            }
+
+            p_1_Stromregelkreis_real_T_0[13]
+            {
+                addr:  0x3d498
+                alias: "Kt"
+                flags: PARAM
+                type:  float(64,IEEE)*
+            }
+
+            p_1_Stromregelkreis_real_T_0[15]
+            {
+                addr:  0x3d498
+                alias: "LowerIntegratorSaturationLimit"
+                flags: PARAM
+                type:  float(64,IEEE)*
+            }
+
+            p_1_Stromregelkreis_real_T_0[17]
+            {
+                addr:  0x3d498
+                alias: "LowerSaturationLimit"
+                flags: PARAM
+                type:  float(64,IEEE)*
+            }
+
+            p_1_Stromregelkreis_real_T_0[19]
+            {
+                addr:  0x3d498
+                alias: "N"
+                flags: PARAM
+                type:  float(64,IEEE)*
+            }
+
+            p_1_Stromregelkreis_real_T_0[21]
+            {
+                addr:  0x3d498
+                alias: "P"
+                flags: PARAM
+                type:  float(64,IEEE)*
+            }
+
+            p_1_Stromregelkreis_real_T_0[23]
+            {
+                addr:  0x3d498
+                alias: "UpperIntegratorSaturationLimit"
+                flags: PARAM
+                type:  float(64,IEEE)*
+            }
+
+            p_1_Stromregelkreis_real_T_0[25]
+            {
+                addr:  0x3d498
+                alias: "UpperSaturationLimit"
+                flags: PARAM
+                type:  float(64,IEEE)*
+            }
+
+            p_0_Stromregelkreis_real_T_0[52]
+            {
+                addr:  0x3d490
+                alias: "y"
+                flags: OUTPUT|READONLY
+                type:  float(64,IEEE)*
+            }
+
+            group "Anti-windup"
+
+                p_0_Stromregelkreis_real_T_0[59]
+                {
+                    addr:  0x3d490
+                    alias: "Out1"
+                    flags: OUTPUT|READONLY
+                    type:  float(64,IEEE)*
+                }
+
+                group "Back Calculation"
+
+                    p_0_Stromregelkreis_real_T_0[59]
+                    {
+                        addr:  0x3d490
+                        alias: "Out1"
+                        flags: OUTPUT|READONLY
+                        type:  float(64,IEEE)*
+                    }
+
+                    group "Kb"
+                    {
+                        block: "Gain"
+                    }
+
+                        p_0_Stromregelkreis_real_T_0[54]
+                        {
+                            addr:  0x3d490
+                            alias: "Out1"
+                            flags: OUTPUT|READONLY
+                            type:  float(64,IEEE)*
+                        }
+
+                        trcref0_Gain
+                        {
+                            alias:    "Gain"
+                            flags:    DEPRECATED|HIDDEN
+                            refgroup: "/Model Root/drehzahlregler/pid"
+                            refvar:   "Kb"
+                        }
+
+                        trcref0_Kb
+                        {
+                            alias:    "Kb"
+                            refgroup: "/Model Root/drehzahlregler/pid"
+                            refvar:   "Kb"
+                        }
+
+                    endgroup
+
+                    group "SumI2"
+                    {
+                        block: "Sum"
+                    }
+
+                        p_0_Stromregelkreis_real_T_0[53]
+                        {
+                            addr:  0x3d490
+                            alias: "Out1"
+                            flags: OUTPUT|READONLY
+                            type:  float(64,IEEE)*
+                        }
+
+                    endgroup
+
+                    group "SumI4"
+                    {
+                        block: "Sum"
+                    }
+
+                        p_0_Stromregelkreis_real_T_0[59]
+                        {
+                            addr:  0x3d490
+                            alias: "Out1"
+                            flags: OUTPUT|READONLY
+                            type:  float(64,IEEE)*
+                        }
+
+                    endgroup
+
+                endgroup
+
+            endgroup
+
+            group "D Gain"
+
+                p_0_Stromregelkreis_real_T_0[47]
+                {
+                    addr:  0x3d490
+                    alias: "Out1"
+                    flags: OUTPUT|READONLY
+                    type:  float(64,IEEE)*
+                }
+
+                group "Internal Parameters"
+
+                    p_0_Stromregelkreis_real_T_0[47]
+                    {
+                        addr:  0x3d490
+                        alias: "Out1"
+                        flags: OUTPUT|READONLY
+                        type:  float(64,IEEE)*
+                    }
+
+                    group "Derivative Gain"
+                    {
+                        block: "Gain"
+                    }
+
+                        p_0_Stromregelkreis_real_T_0[47]
+                        {
+                            addr:  0x3d490
+                            alias: "Out1"
+                            flags: OUTPUT|READONLY
+                            type:  float(64,IEEE)*
+                        }
+
+                        trcref0_D
+                        {
+                            alias:    "D"
+                            refgroup: "/Model Root/drehzahlregler/pid"
+                            refvar:   "D"
+                        }
+
+                        trcref0_Gain
+                        {
+                            alias:    "Gain"
+                            flags:    DEPRECATED|HIDDEN
+                            refgroup: "/Model Root/drehzahlregler/pid"
+                            refvar:   "D"
+                        }
+
+                    endgroup
+
+                endgroup
+
+            endgroup
+
+            group "External Derivative"
+
+                group "Error"
+
+                endgroup
+
+            endgroup
+
+            group "Filter"
+
+                p_0_Stromregelkreis_real_T_0[49]
+                {
+                    addr:  0x3d490
+                    alias: "Y"
+                    flags: OUTPUT|READONLY
+                    type:  float(64,IEEE)*
+                }
+
+                group "Cont. Filter"
+
+                    p_0_Stromregelkreis_real_T_0[49]
+                    {
+                        addr:  0x3d490
+                        alias: "Y"
+                        flags: OUTPUT|READONLY
+                        type:  float(64,IEEE)*
+                    }
+
+                    group "Filter"
+                    {
+                        block: "Integrator"
+                    }
+
+                        p_0_Stromregelkreis_real_T_0[48]
+                        {
+                            addr:  0x3d490
+                            alias: "Out1"
+                            flags: OUTPUT|READONLY
+                            type:  float(64,IEEE)*
+                        }
+
+                        trcref0_InitialCondition
+                        {
+                            alias:    "InitialCondition"
+                            flags:    DEPRECATED|HIDDEN
+                            refgroup: "/Model Root/drehzahlregler/pid"
+                            refvar:   "InitialConditionForFilter"
+                        }
+
+                        trcref0_InitialConditionForFilter
+                        {
+                            alias:    "InitialConditionForFilter"
+                            refgroup: "/Model Root/drehzahlregler/pid"
+                            refvar:   "InitialConditionForFilter"
+                        }
+
+                    endgroup
+
+                    group "SumD"
+                    {
+                        block: "Sum"
+                    }
+
+                        p_0_Stromregelkreis_real_T_0[49]
+                        {
+                            addr:  0x3d490
+                            alias: "Out1"
+                            flags: OUTPUT|READONLY
+                            type:  float(64,IEEE)*
+                        }
+
+                    endgroup
+
+                endgroup
+
+            endgroup
+
+            group "Filter ICs"
+
+                group "Internal IC - Filter"
+
+                endgroup
+
+            endgroup
+
+            group "I Gain"
+
+                p_0_Stromregelkreis_real_T_0[55]
+                {
+                    addr:  0x3d490
+                    alias: "Out1"
+                    flags: OUTPUT|READONLY
+                    type:  float(64,IEEE)*
+                }
+
+                group "Internal Parameters"
+
+                    p_0_Stromregelkreis_real_T_0[55]
+                    {
+                        addr:  0x3d490
+                        alias: "Out1"
+                        flags: OUTPUT|READONLY
+                        type:  float(64,IEEE)*
+                    }
+
+                    group "Integral Gain"
+                    {
+                        block: "Gain"
+                    }
+
+                        p_0_Stromregelkreis_real_T_0[55]
+                        {
+                            addr:  0x3d490
+                            alias: "Out1"
+                            flags: OUTPUT|READONLY
+                            type:  float(64,IEEE)*
+                        }
+
+                        trcref0_Gain
+                        {
+                            alias:    "Gain"
+                            flags:    DEPRECATED|HIDDEN
+                            refgroup: "/Model Root/drehzahlregler/pid"
+                            refvar:   "I"
+                        }
+
+                        trcref0_I
+                        {
+                            alias:    "I"
+                            refgroup: "/Model Root/drehzahlregler/pid"
+                            refvar:   "I"
+                        }
+
+                    endgroup
+
+                endgroup
+
+            endgroup
+
+            group "Ideal P Gain"
+
+                p_0_Stromregelkreis_real_T_0[51]
+                {
+                    addr:  0x3d490
+                    alias: "Out1"
+                    flags: OUTPUT|READONLY
+                    type:  float(64,IEEE)*
+                }
+
+                group "Passthrough"
+
+                    p_0_Stromregelkreis_real_T_0[51]
+                    {
+                        addr:  0x3d490
+                        alias: "Out1"
+                        flags: OUTPUT|READONLY
+                        type:  float(64,IEEE)*
+                    }
+
+                endgroup
+
+            endgroup
+
+            group "Ideal P Gain Fdbk"
+
+                group "Disabled"
+
+                endgroup
+
+            endgroup
+
+            group "Integrator"
+
+                p_0_Stromregelkreis_real_T_0[46]
+                {
+                    addr:  0x3d490
+                    alias: "out"
+                    flags: OUTPUT|READONLY
+                    type:  float(64,IEEE)*
+                }
+
+                group "Continuous"
+
+                    p_0_Stromregelkreis_real_T_0[46]
+                    {
+                        addr:  0x3d490
+                        alias: "out"
+                        flags: OUTPUT|READONLY
+                        type:  float(64,IEEE)*
+                    }
+
+                    group "Integrator"
+                    {
+                        block: "Integrator"
+                    }
+
+                        p_0_Stromregelkreis_real_T_0[46]
+                        {
+                            addr:  0x3d490
+                            alias: "Out1"
+                            flags: OUTPUT|READONLY
+                            type:  float(64,IEEE)*
+                        }
+
+                        trcref0_InitialCondition
+                        {
+                            alias:    "InitialCondition"
+                            flags:    DEPRECATED|HIDDEN
+                            refgroup: "/Model Root/drehzahlregler/pid"
+                            refvar:   "InitialConditionForIntegrator"
+                        }
+
+                        trcref0_InitialConditionForIntegrator
+                        {
+                            alias:    "InitialConditionForIntegrator"
+                            refgroup: "/Model Root/drehzahlregler/pid"
+                            refvar:   "InitialConditionForIntegrator"
+                        }
+
+                        trcref2_LowerIntegratorSaturationLimit
+                        {
+                            alias:    "LowerIntegratorSaturationLimit"
+                            refgroup: "/Model Root/drehzahlregler/pid"
+                            refvar:   "LowerIntegratorSaturationLimit"
+                        }
+
+                        trcref2_LowerSaturationLimit
+                        {
+                            alias:    "LowerSaturationLimit"
+                            flags:    DEPRECATED|HIDDEN
+                            refgroup: "/Model Root/drehzahlregler/pid"
+                            refvar:   "LowerIntegratorSaturationLimit"
+                        }
+
+                        trcref1_UpperIntegratorSaturationLimit
+                        {
+                            alias:    "UpperIntegratorSaturationLimit"
+                            refgroup: "/Model Root/drehzahlregler/pid"
+                            refvar:   "UpperIntegratorSaturationLimit"
+                        }
+
+                        trcref1_UpperSaturationLimit
+                        {
+                            alias:    "UpperSaturationLimit"
+                            flags:    DEPRECATED|HIDDEN
+                            refgroup: "/Model Root/drehzahlregler/pid"
+                            refvar:   "UpperIntegratorSaturationLimit"
+                        }
+
+                    endgroup
+
+                endgroup
+
+            endgroup
+
+            group "Integrator ICs"
+
+                group "Internal IC"
+
+                endgroup
+
+            endgroup
+
+            group "N Copy"
+
+                group "Disabled"
+
+                endgroup
+
+            endgroup
+
+            group "N Gain"
+
+                p_0_Stromregelkreis_real_T_0[50]
+                {
+                    addr:  0x3d490
+                    alias: "Out1"
+                    flags: OUTPUT|READONLY
+                    type:  float(64,IEEE)*
+                }
+
+                group "Internal Parameters"
+
+                    p_0_Stromregelkreis_real_T_0[50]
+                    {
+                        addr:  0x3d490
+                        alias: "Out1"
+                        flags: OUTPUT|READONLY
+                        type:  float(64,IEEE)*
+                    }
+
+                    group "Filter Coefficient"
+                    {
+                        block: "Gain"
+                    }
+
+                        p_0_Stromregelkreis_real_T_0[50]
+                        {
+                            addr:  0x3d490
+                            alias: "Out1"
+                            flags: OUTPUT|READONLY
+                            type:  float(64,IEEE)*
+                        }
+
+                        trcref0_Gain
+                        {
+                            alias:    "Gain"
+                            flags:    DEPRECATED|HIDDEN
+                            refgroup: "/Model Root/drehzahlregler/pid"
+                            refvar:   "N"
+                        }
+
+                        trcref0_N
+                        {
+                            alias:    "N"
+                            refgroup: "/Model Root/drehzahlregler/pid"
+                            refvar:   "N"
+                        }
+
+                    endgroup
+
+                endgroup
+
+            endgroup
+
+            group "P Copy"
+
+                group "Disabled"
+
+                endgroup
+
+            endgroup
+
+            group "Parallel P Gain"
+
+                p_0_Stromregelkreis_real_T_0[45]
+                {
+                    addr:  0x3d490
+                    alias: "Out1"
+                    flags: OUTPUT|READONLY
+                    type:  float(64,IEEE)*
+                }
+
+                group "Internal Parameters"
+
+                    p_0_Stromregelkreis_real_T_0[45]
+                    {
+                        addr:  0x3d490
+                        alias: "Out1"
+                        flags: OUTPUT|READONLY
+                        type:  float(64,IEEE)*
+                    }
+
+                    group "Proportional Gain"
+                    {
+                        block: "Gain"
+                    }
+
+                        p_0_Stromregelkreis_real_T_0[45]
+                        {
+                            addr:  0x3d490
+                            alias: "Out1"
+                            flags: OUTPUT|READONLY
+                            type:  float(64,IEEE)*
+                        }
+
+                        trcref0_Gain
+                        {
+                            alias:    "Gain"
+                            flags:    DEPRECATED|HIDDEN
+                            refgroup: "/Model Root/drehzahlregler/pid"
+                            refvar:   "P"
+                        }
+
+                        trcref0_P
+                        {
+                            alias:    "P"
+                            refgroup: "/Model Root/drehzahlregler/pid"
+                            refvar:   "P"
+                        }
+
+                    endgroup
+
+                endgroup
+
+            endgroup
+
+            group "PID Compensator Formula"
+
+            endgroup
+
+            group "postSat Signal"
+
+                p_0_Stromregelkreis_real_T_0[52]
+                {
+                    addr:  0x3d490
+                    alias: "Out1"
+                    flags: OUTPUT|READONLY
+                    type:  float(64,IEEE)*
+                }
+
+                group "Forward_Path"
+
+                    p_0_Stromregelkreis_real_T_0[52]
+                    {
+                        addr:  0x3d490
+                        alias: "Out1"
+                        flags: OUTPUT|READONLY
+                        type:  float(64,IEEE)*
+                    }
+
+                endgroup
+
+            endgroup
+
+            group "preInt Signal"
+
+                p_0_Stromregelkreis_real_T_0[58]
+                {
+                    addr:  0x3d490
+                    alias: "Out1"
+                    flags: OUTPUT|READONLY
+                    type:  float(64,IEEE)*
+                }
+
+                group "Internal PreInt"
+
+                    p_0_Stromregelkreis_real_T_0[58]
+                    {
+                        addr:  0x3d490
+                        alias: "Out1"
+                        flags: OUTPUT|READONLY
+                        type:  float(64,IEEE)*
+                    }
+
+                endgroup
+
+            endgroup
+
+            group "preSat Signal"
+
+                p_0_Stromregelkreis_real_T_0[51]
+                {
+                    addr:  0x3d490
+                    alias: "Out1"
+                    flags: OUTPUT|READONLY
+                    type:  float(64,IEEE)*
+                }
+
+                group "Forward_Path"
+
+                    p_0_Stromregelkreis_real_T_0[51]
+                    {
+                        addr:  0x3d490
+                        alias: "Out1"
+                        flags: OUTPUT|READONLY
+                        type:  float(64,IEEE)*
+                    }
+
+                endgroup
+
+            endgroup
+
+            group "Reset Signal"
+
+                group "Disabled"
+
+                endgroup
+
+            endgroup
+
+            group "Saturation"
+
+                p_0_Stromregelkreis_real_T_0[52]
+                {
+                    addr:  0x3d490
+                    alias: "Out1"
+                    flags: OUTPUT|READONLY
+                    type:  float(64,IEEE)*
+                }
+
+                group "Enabled"
+
+                    p_0_Stromregelkreis_real_T_0[52]
+                    {
+                        addr:  0x3d490
+                        alias: "Out1"
+                        flags: OUTPUT|READONLY
+                        type:  float(64,IEEE)*
+                    }
+
+                    group "Saturation"
+                    {
+                        block: "Saturate"
+                    }
+
+                        p_0_Stromregelkreis_real_T_0[52]
+                        {
+                            addr:  0x3d490
+                            alias: "Out1"
+                            flags: OUTPUT|READONLY
+                            type:  float(64,IEEE)*
+                        }
+
+                        trcref1_LowerLimit
+                        {
+                            alias:    "LowerLimit"
+                            flags:    DEPRECATED|HIDDEN
+                            refgroup: "/Model Root/drehzahlregler/pid"
+                            refvar:   "LowerSaturationLimit"
+                        }
+
+                        trcref1_LowerSaturationLimit
+                        {
+                            alias:    "LowerSaturationLimit"
+                            refgroup: "/Model Root/drehzahlregler/pid"
+                            refvar:   "LowerSaturationLimit"
+                        }
+
+                        trcref0_UpperLimit
+                        {
+                            alias:    "UpperLimit"
+                            flags:    DEPRECATED|HIDDEN
+                            refgroup: "/Model Root/drehzahlregler/pid"
+                            refvar:   "UpperSaturationLimit"
+                        }
+
+                        trcref0_UpperSaturationLimit
+                        {
+                            alias:    "UpperSaturationLimit"
+                            refgroup: "/Model Root/drehzahlregler/pid"
+                            refvar:   "UpperSaturationLimit"
+                        }
+
+                    endgroup
+
+                endgroup
+
+            endgroup
+
+            group "Saturation Fdbk"
+
+                group "Disabled"
+
+                endgroup
+
+            endgroup
+
+            group "Sum"
+
+                p_0_Stromregelkreis_real_T_0[51]
+                {
+                    addr:  0x3d490
+                    alias: "Out1"
+                    flags: OUTPUT|READONLY
+                    type:  float(64,IEEE)*
+                }
+
+                group "Sum_PID"
+
+                    p_0_Stromregelkreis_real_T_0[51]
+                    {
+                        addr:  0x3d490
+                        alias: "Out1"
+                        flags: OUTPUT|READONLY
+                        type:  float(64,IEEE)*
+                    }
+
+                    group "Sum"
+                    {
+                        block: "Sum"
+                    }
+
+                        p_0_Stromregelkreis_real_T_0[51]
+                        {
+                            addr:  0x3d490
+                            alias: "Out1"
+                            flags: OUTPUT|READONLY
+                            type:  float(64,IEEE)*
+                        }
+
+                    endgroup
+
+                endgroup
+
+            endgroup
+
+            group "Sum Fdbk"
+
+                group "Disabled"
+
+                endgroup
+
+            endgroup
+
+            group "Tracking Mode"
+
+                p_0_Stromregelkreis_real_T_0[57]
+                {
+                    addr:  0x3d490
+                    alias: "Out1"
+                    flags: OUTPUT|READONLY
+                    type:  float(64,IEEE)*
+                }
+
+                group "Enabled"
+
+                    p_0_Stromregelkreis_real_T_0[57]
+                    {
+                        addr:  0x3d490
+                        alias: "Out1"
+                        flags: OUTPUT|READONLY
+                        type:  float(64,IEEE)*
+                    }
+
+                    group "Kt"
+                    {
+                        block: "Gain"
+                    }
+
+                        p_0_Stromregelkreis_real_T_0[57]
+                        {
+                            addr:  0x3d490
+                            alias: "Out1"
+                            flags: OUTPUT|READONLY
+                            type:  float(64,IEEE)*
+                        }
+
+                        trcref0_Gain
+                        {
+                            alias:    "Gain"
+                            flags:    DEPRECATED|HIDDEN
+                            refgroup: "/Model Root/drehzahlregler/pid"
+                            refvar:   "Kt"
+                        }
+
+                        trcref0_Kt
+                        {
+                            alias:    "Kt"
+                            refgroup: "/Model Root/drehzahlregler/pid"
+                            refvar:   "Kt"
+                        }
+
+                    endgroup
+
+                    group "SumI3"
+                    {
+                        block: "Sum"
+                    }
+
+                        p_0_Stromregelkreis_real_T_0[56]
+                        {
+                            addr:  0x3d490
+                            alias: "Out1"
+                            flags: OUTPUT|READONLY
+                            type:  float(64,IEEE)*
+                        }
+
+                    endgroup
+
+                endgroup
+
+            endgroup
+
+            group "Tracking Mode Sum"
+
+                p_0_Stromregelkreis_real_T_0[58]
+                {
+                    addr:  0x3d490
+                    alias: "preInt"
+                    flags: OUTPUT|READONLY
+                    type:  float(64,IEEE)*
+                }
+
+                group "Tracking Mode"
+
+                    p_0_Stromregelkreis_real_T_0[58]
+                    {
+                        addr:  0x3d490
+                        alias: "preInt"
+                        flags: OUTPUT|READONLY
+                        type:  float(64,IEEE)*
+                    }
+
+                    group "SumI1"
+                    {
+                        block: "Sum"
+                    }
+
+                        p_0_Stromregelkreis_real_T_0[58]
+                        {
+                            addr:  0x3d490
+                            alias: "Out1"
+                            flags: OUTPUT|READONLY
+                            type:  float(64,IEEE)*
+                        }
+
+                    endgroup
+
+                endgroup
+
+            endgroup
+
+            group "Tsamp - Integral"
+
+                p_0_Stromregelkreis_real_T_0[59]
+                {
+                    addr:  0x3d490
+                    alias: "Out1"
+                    flags: OUTPUT|READONLY
+                    type:  float(64,IEEE)*
+                }
+
+                group "TsSignalSpecification"
+
+                    p_0_Stromregelkreis_real_T_0[59]
+                    {
+                        addr:  0x3d490
+                        alias: "Out1"
+                        flags: OUTPUT|READONLY
+                        type:  float(64,IEEE)*
+                    }
+
+                endgroup
+
+            endgroup
+
+            group "Tsamp - Ngain"
+
+                p_0_Stromregelkreis_real_T_0[50]
+                {
+                    addr:  0x3d490
+                    alias: "Out1"
+                    flags: OUTPUT|READONLY
+                    type:  float(64,IEEE)*
+                }
+
+                group "Passthrough"
+
+                    p_0_Stromregelkreis_real_T_0[50]
+                    {
+                        addr:  0x3d490
+                        alias: "Out1"
+                        flags: OUTPUT|READONLY
+                        type:  float(64,IEEE)*
+                    }
+
+                endgroup
+
+            endgroup
+
+        endgroup
+
+    endgroup
+
+    group "DS1104ENC_HW_INDEX_C1"
+
+        p_0_Stromregelkreis_boolean_T_1[0]
+        {
+            addr:    0x3d494
+            alias:   "Index"
+            bitmask: 0x1
+            flags:   OUTPUT|READONLY
+            range:   < 0 ; 1 >
+            type:    uint(8)*
+        }
+
+    endgroup
+
+    group "DS1104ENC_POS_C1"
+
+        p_0_Stromregelkreis_real_T_0[1]
+        {
+            addr:  0x3d490
+            alias: "Enc delta position"
+            flags: OUTPUT|READONLY
+            type:  float(64,IEEE)*
+        }
+
+        p_0_Stromregelkreis_real_T_0[15]
+        {
+            addr:  0x3d490
+            alias: "Enc position"
+            flags: OUTPUT|READONLY
+            type:  float(64,IEEE)*
+        }
+
+    endgroup
+
+    group "DS1104ENC_SET_POS_C1"
+
+    endgroup
+
+    group "DS1104ENC_SETUP"
+
+    endgroup
+
+    group "DS1104SL_DSP_BIT_OUT_C3"
+
+    endgroup
+
+    group "DS1104SL_DSP_BIT_OUT_C4"
+
+    endgroup
+
+    group "DS1104SL_DSP_BIT_OUT_C5"
+
+    endgroup
+
+    group "elektrischer Winkel"
+    {
+        block: "Gain"
+    }
+
+        p_1_Stromregelkreis_real_T_0[44]
+        {
+            addr:  0x3d498
+            alias: "Gain"
+            flags: PARAM
+            type:  float(64,IEEE)*
+        }
+
+        p_0_Stromregelkreis_real_T_0[18]
+        {
+            addr:  0x3d490
+            alias: "Out1"
+            flags: OUTPUT|READONLY
+            type:  float(64,IEEE)*
+        }
+
+    endgroup
+
+    group "iq_soll_enable_sw"
+    {
+        block: "Switch"
+    }
+
+        p_0_Stromregelkreis_real_T_0[66]
+        {
+            addr:  0x3d490
+            alias: "Out1"
+            flags: OUTPUT|READONLY
+            type:  float(64,IEEE)*
+        }
+
+    endgroup
+
+    group "iq_soll_safe"
+    {
+        block: "Constant"
+    }
+
+        p_1_Stromregelkreis_real_T_0[39]
+        {
+            addr:  0x3d498
+            alias: "Value"
+            flags: PARAM
+            type:  float(64,IEEE)*
+        }
+
+    endgroup
+
+    group "mechanischer Winkel"
+    {
+        block: "Gain"
+    }
+
+        p_1_Stromregelkreis_real_T_0[43]
+        {
+            addr:  0x3d498
+            alias: "Gain"
+            flags: PARAM
+            type:  float(64,IEEE)*
+        }
+
+        p_0_Stromregelkreis_real_T_0[16]
+        {
+            addr:  0x3d490
+            alias: "Out1"
+            flags: OUTPUT|READONLY
+            type:  float(64,IEEE)*
+        }
+
+    endgroup
+
+    group "n_numierung2"
+    {
+        block: "Gain"
+    }
+
+        p_1_Stromregelkreis_real_T_0[37]
+        {
+            addr:  0x3d498
+            alias: "Gain"
+            flags: PARAM
+            type:  float(64,IEEE)*
+        }
+
+        p_0_Stromregelkreis_real_T_0[3]
+        {
+            addr:  0x3d490
+            alias: "Out1"
+            flags: OUTPUT|READONLY
+            type:  float(64,IEEE)*
+        }
+
+    endgroup
+
+    group "n_nurmierung1"
+    {
+        block: "Gain"
+    }
+
+        p_1_Stromregelkreis_real_T_0[36]
+        {
+            addr:  0x3d498
+            alias: "Gain"
+            flags: PARAM
+            type:  float(64,IEEE)*
+        }
+
+        p_0_Stromregelkreis_real_T_0[0]
+        {
+            addr:  0x3d490
+            alias: "Out1"
+            flags: OUTPUT|READONLY
+            type:  float(64,IEEE)*
+        }
+
+    endgroup
+
+    group "n_pi_iq_sw"
+    {
+        block: "Switch"
+    }
+
+        p_0_Stromregelkreis_real_T_0[13]
+        {
+            addr:  0x3d490
+            alias: "Out1"
+            flags: OUTPUT|READONLY
+            type:  float(64,IEEE)*
+        }
+
+        p_1_Stromregelkreis_real_T_0[40]
+        {
+            addr:  0x3d498
+            alias: "Threshold"
+            flags: PARAM
+            type:  float(64,IEEE)*
+        }
+
+    endgroup
+
+    group "n_Regelung_Start"
+    {
+        block: "Constant"
+    }
+
+        p_1_Stromregelkreis_real_T_0[38]
+        {
+            addr:  0x3d498
+            alias: "Value"
+            flags: PARAM
+            type:  float(64,IEEE)*
+        }
+
+    endgroup
+
+    group "n_Regler"
+
+        p_0_Stromregelkreis_real_T_0[65]
+        {
+            addr:  0x3d490
+            alias: "y"
+            flags: OUTPUT|READONLY
+            type:  float(64,IEEE)*
+        }
+
+        group "Add"
+        {
+            block: "Sum"
+        }
+
+            p_0_Stromregelkreis_real_T_0[62]
+            {
+                addr:  0x3d490
+                alias: "Out1"
+                flags: OUTPUT|READONLY
+                type:  float(64,IEEE)*
+            }
+
+        endgroup
+
+        group "Gain"
+        {
+            block: "Gain"
+        }
+
+            p_1_Stromregelkreis_real_T_0[66]
+            {
+                addr:  0x3d498
+                alias: "Gain"
+                flags: PARAM
+                type:  float(64,IEEE)*
+            }
+
+            p_0_Stromregelkreis_real_T_0[60]
+            {
+                addr:  0x3d490
+                alias: "Out1"
+                flags: OUTPUT|READONLY
+                type:  float(64,IEEE)*
+            }
+
+        endgroup
+
+        group "Gain1"
+        {
+            block: "Gain"
+        }
+
+            p_1_Stromregelkreis_real_T_0[70]
+            {
+                addr:  0x3d498
+                alias: "Gain"
+                flags: PARAM
+                type:  float(64,IEEE)*
+            }
+
+            p_0_Stromregelkreis_real_T_0[63]
+            {
+                addr:  0x3d490
+                alias: "Out1"
+                flags: OUTPUT|READONLY
+                type:  float(64,IEEE)*
+            }
+
+        endgroup
+
+        group "Gain2"
+        {
+            block: "Gain"
+        }
+
+            p_1_Stromregelkreis_real_T_0[73]
+            {
+                addr:  0x3d498
+                alias: "Gain"
+                flags: PARAM
+                type:  float(64,IEEE)*
+            }
+
+            p_0_Stromregelkreis_real_T_0[65]
+            {
+                addr:  0x3d490
+                alias: "Out1"
+                flags: OUTPUT|READONLY
+                type:  float(64,IEEE)*
+            }
+
+        endgroup
+
+        group "Integrator\nLimited"
+        {
+            block: "Integrator"
+        }
+
+            p_1_Stromregelkreis_real_T_0[67]
+            {
+                addr:  0x3d498
+                alias: "InitialCondition"
+                flags: PARAM
+                type:  float(64,IEEE)*
+            }
+
+            p_1_Stromregelkreis_real_T_0[69]
+            {
+                addr:  0x3d498
+                alias: "LowerSaturationLimit"
+                flags: PARAM
+                type:  float(64,IEEE)*
+            }
+
+            p_0_Stromregelkreis_real_T_0[61]
+            {
+                addr:  0x3d490
+                alias: "Out1"
+                flags: OUTPUT|READONLY
+                type:  float(64,IEEE)*
+            }
+
+            p_1_Stromregelkreis_real_T_0[68]
+            {
+                addr:  0x3d498
+                alias: "UpperSaturationLimit"
+                flags: PARAM
+                type:  float(64,IEEE)*
+            }
+
+        endgroup
+
+        group "Saturation"
+        {
+            block: "Saturate"
+        }
+
+            p_1_Stromregelkreis_real_T_0[72]
+            {
+                addr:  0x3d498
+                alias: "LowerLimit"
+                flags: PARAM
+                type:  float(64,IEEE)*
+            }
+
+            p_0_Stromregelkreis_real_T_0[64]
+            {
+                addr:  0x3d490
+                alias: "Out1"
+                flags: OUTPUT|READONLY
+                type:  float(64,IEEE)*
+            }
+
+            p_1_Stromregelkreis_real_T_0[71]
+            {
+                addr:  0x3d498
+                alias: "UpperLimit"
+                flags: PARAM
+                type:  float(64,IEEE)*
+            }
+
+        endgroup
+
+    endgroup
+
+    group "n_soll"
+    {
+        block: "Constant"
+    }
+
+        p_1_Stromregelkreis_real_T_0[35]
+        {
+            addr:  0x3d498
+            alias: "Value"
+            flags: PARAM
+            type:  float(64,IEEE)*
+        }
+
+    endgroup
+
+    group "Offset"
+    {
+        block: "Constant"
+    }
+
+        p_1_Stromregelkreis_real_T_0[42]
+        {
+            addr:  0x3d498
+            alias: "Value"
+            flags: PARAM
+            type:  float(64,IEEE)*
+        }
+
+    endgroup
+
+    group "pid"
+
+        p_1_Stromregelkreis_real_T_0[1]
+        {
+            addr:  0x3d498
+            alias: "D"
+            flags: PARAM
+            type:  float(64,IEEE)*
+        }
+
+        p_1_Stromregelkreis_real_T_0[3]
+        {
+            addr:  0x3d498
+            alias: "I"
+            flags: PARAM
+            type:  float(64,IEEE)*
+        }
+
+        p_1_Stromregelkreis_real_T_0[5]
+        {
+            addr:  0x3d498
+            alias: "InitialConditionForFilter"
+            flags: PARAM
+            type:  float(64,IEEE)*
+        }
+
+        p_1_Stromregelkreis_real_T_0[7]
+        {
+            addr:  0x3d498
+            alias: "InitialConditionForIntegrator"
+            flags: PARAM
+            type:  float(64,IEEE)*
+        }
+
+        p_1_Stromregelkreis_real_T_0[10]
+        {
+            addr:  0x3d498
+            alias: "Kb"
+            flags: PARAM
+            type:  float(64,IEEE)*
+        }
+
+        p_1_Stromregelkreis_real_T_0[12]
+        {
+            addr:  0x3d498
+            alias: "Kt"
+            flags: PARAM
+            type:  float(64,IEEE)*
+        }
+
+        p_1_Stromregelkreis_real_T_0[14]
+        {
+            addr:  0x3d498
+            alias: "LowerIntegratorSaturationLimit"
+            flags: PARAM
+            type:  float(64,IEEE)*
+        }
+
+        p_1_Stromregelkreis_real_T_0[16]
+        {
+            addr:  0x3d498
+            alias: "LowerSaturationLimit"
+            flags: PARAM
+            type:  float(64,IEEE)*
+        }
+
+        p_1_Stromregelkreis_real_T_0[18]
+        {
+            addr:  0x3d498
+            alias: "N"
+            flags: PARAM
+            type:  float(64,IEEE)*
+        }
+
+        p_1_Stromregelkreis_real_T_0[20]
+        {
+            addr:  0x3d498
+            alias: "P"
+            flags: PARAM
+            type:  float(64,IEEE)*
+        }
+
+        p_1_Stromregelkreis_real_T_0[22]
+        {
+            addr:  0x3d498
+            alias: "UpperIntegratorSaturationLimit"
+            flags: PARAM
+            type:  float(64,IEEE)*
+        }
+
+        p_1_Stromregelkreis_real_T_0[24]
+        {
+            addr:  0x3d498
+            alias: "UpperSaturationLimit"
+            flags: PARAM
+            type:  float(64,IEEE)*
+        }
+
+        p_0_Stromregelkreis_real_T_0[12]
+        {
+            addr:  0x3d490
+            alias: "y"
+            flags: OUTPUT|READONLY
+            type:  float(64,IEEE)*
+        }
+
+        group "Anti-windup"
+
+            p_0_Stromregelkreis_real_T_0[44]
+            {
+                addr:  0x3d490
+                alias: "Out1"
+                flags: OUTPUT|READONLY
+                type:  float(64,IEEE)*
+            }
+
+            group "Back Calculation"
+
+                p_0_Stromregelkreis_real_T_0[44]
+                {
+                    addr:  0x3d490
+                    alias: "Out1"
+                    flags: OUTPUT|READONLY
+                    type:  float(64,IEEE)*
+                }
+
+                group "Kb"
+                {
+                    block: "Gain"
+                }
+
+                    p_0_Stromregelkreis_real_T_0[39]
+                    {
+                        addr:  0x3d490
+                        alias: "Out1"
+                        flags: OUTPUT|READONLY
+                        type:  float(64,IEEE)*
+                    }
+
+                    trcref0_Gain
+                    {
+                        alias:    "Gain"
+                        flags:    DEPRECATED|HIDDEN
+                        refgroup: "/Model Root/pid"
+                        refvar:   "Kb"
+                    }
+
+                    trcref0_Kb
+                    {
+                        alias:    "Kb"
+                        refgroup: "/Model Root/pid"
+                        refvar:   "Kb"
+                    }
+
+                endgroup
+
+                group "SumI2"
+                {
+                    block: "Sum"
+                }
+
+                    p_0_Stromregelkreis_real_T_0[38]
+                    {
+                        addr:  0x3d490
+                        alias: "Out1"
+                        flags: OUTPUT|READONLY
+                        type:  float(64,IEEE)*
+                    }
+
+                endgroup
+
+                group "SumI4"
+                {
+                    block: "Sum"
+                }
+
+                    p_0_Stromregelkreis_real_T_0[44]
+                    {
+                        addr:  0x3d490
+                        alias: "Out1"
+                        flags: OUTPUT|READONLY
+                        type:  float(64,IEEE)*
+                    }
+
+                endgroup
+
+            endgroup
+
+        endgroup
+
+        group "D Gain"
+
+            p_0_Stromregelkreis_real_T_0[7]
+            {
+                addr:  0x3d490
+                alias: "Out1"
+                flags: OUTPUT|READONLY
+                type:  float(64,IEEE)*
+            }
+
+            group "Internal Parameters"
+
+                p_0_Stromregelkreis_real_T_0[7]
+                {
+                    addr:  0x3d490
+                    alias: "Out1"
+                    flags: OUTPUT|READONLY
+                    type:  float(64,IEEE)*
+                }
+
+                group "Derivative Gain"
+                {
+                    block: "Gain"
+                }
+
+                    p_0_Stromregelkreis_real_T_0[7]
+                    {
+                        addr:  0x3d490
+                        alias: "Out1"
+                        flags: OUTPUT|READONLY
+                        type:  float(64,IEEE)*
+                    }
+
+                    trcref0_D
+                    {
+                        alias:    "D"
+                        refgroup: "/Model Root/pid"
+                        refvar:   "D"
+                    }
+
+                    trcref0_Gain
+                    {
+                        alias:    "Gain"
+                        flags:    DEPRECATED|HIDDEN
+                        refgroup: "/Model Root/pid"
+                        refvar:   "D"
+                    }
+
+                endgroup
+
+            endgroup
+
+        endgroup
+
+        group "External Derivative"
+
+            p_0_Stromregelkreis_real_T_0[4]
+            {
+                addr:  0x3d490
+                alias: "Out1"
+                flags: OUTPUT|READONLY
+                type:  float(64,IEEE)*
+            }
+
+            group "Error"
+
+                p_0_Stromregelkreis_real_T_0[4]
+                {
+                    addr:  0x3d490
+                    alias: "Out1"
+                    flags: OUTPUT|READONLY
+                    type:  float(64,IEEE)*
+                }
+
+            endgroup
+
+        endgroup
+
+        group "Filter"
+
+            p_0_Stromregelkreis_real_T_0[9]
+            {
+                addr:  0x3d490
+                alias: "Y"
+                flags: OUTPUT|READONLY
+                type:  float(64,IEEE)*
+            }
+
+            group "Cont. Filter"
+
+                p_0_Stromregelkreis_real_T_0[9]
+                {
+                    addr:  0x3d490
+                    alias: "Y"
+                    flags: OUTPUT|READONLY
+                    type:  float(64,IEEE)*
+                }
+
+                group "Filter"
+                {
+                    block: "Integrator"
+                }
+
+                    p_0_Stromregelkreis_real_T_0[8]
+                    {
+                        addr:  0x3d490
+                        alias: "Out1"
+                        flags: OUTPUT|READONLY
+                        type:  float(64,IEEE)*
+                    }
+
+                    trcref0_InitialCondition
+                    {
+                        alias:    "InitialCondition"
+                        flags:    DEPRECATED|HIDDEN
+                        refgroup: "/Model Root/pid"
+                        refvar:   "InitialConditionForFilter"
+                    }
+
+                    trcref0_InitialConditionForFilter
+                    {
+                        alias:    "InitialConditionForFilter"
+                        refgroup: "/Model Root/pid"
+                        refvar:   "InitialConditionForFilter"
+                    }
+
+                endgroup
+
+                group "SumD"
+                {
+                    block: "Sum"
+                }
+
+                    p_0_Stromregelkreis_real_T_0[9]
+                    {
+                        addr:  0x3d490
+                        alias: "Out1"
+                        flags: OUTPUT|READONLY
+                        type:  float(64,IEEE)*
+                    }
+
+                endgroup
+
+            endgroup
+
+        endgroup
+
+        group "Filter ICs"
+
+            group "Internal IC - Filter"
+
+            endgroup
+
+        endgroup
+
+        group "I Gain"
+
+            p_0_Stromregelkreis_real_T_0[40]
+            {
+                addr:  0x3d490
+                alias: "Out1"
+                flags: OUTPUT|READONLY
+                type:  float(64,IEEE)*
+            }
+
+            group "Internal Parameters"
+
+                p_0_Stromregelkreis_real_T_0[40]
+                {
+                    addr:  0x3d490
+                    alias: "Out1"
+                    flags: OUTPUT|READONLY
+                    type:  float(64,IEEE)*
+                }
+
+                group "Integral Gain"
+                {
+                    block: "Gain"
+                }
+
+                    p_0_Stromregelkreis_real_T_0[40]
+                    {
+                        addr:  0x3d490
+                        alias: "Out1"
+                        flags: OUTPUT|READONLY
+                        type:  float(64,IEEE)*
+                    }
+
+                    trcref0_Gain
+                    {
+                        alias:    "Gain"
+                        flags:    DEPRECATED|HIDDEN
+                        refgroup: "/Model Root/pid"
+                        refvar:   "I"
+                    }
+
+                    trcref0_I
+                    {
+                        alias:    "I"
+                        refgroup: "/Model Root/pid"
+                        refvar:   "I"
+                    }
+
+                endgroup
+
+            endgroup
+
+        endgroup
+
+        group "Ideal P Gain"
+
+            p_0_Stromregelkreis_real_T_0[11]
+            {
+                addr:  0x3d490
+                alias: "Out1"
+                flags: OUTPUT|READONLY
+                type:  float(64,IEEE)*
+            }
+
+            group "Passthrough"
+
+                p_0_Stromregelkreis_real_T_0[11]
+                {
+                    addr:  0x3d490
+                    alias: "Out1"
+                    flags: OUTPUT|READONLY
+                    type:  float(64,IEEE)*
+                }
+
+            endgroup
+
+        endgroup
+
+        group "Ideal P Gain Fdbk"
+
+            group "Disabled"
+
+            endgroup
+
+        endgroup
+
+        group "Integrator"
+
+            p_0_Stromregelkreis_real_T_0[6]
+            {
+                addr:  0x3d490
+                alias: "out"
+                flags: OUTPUT|READONLY
+                type:  float(64,IEEE)*
+            }
+
+            group "Continuous"
+
+                p_0_Stromregelkreis_real_T_0[6]
+                {
+                    addr:  0x3d490
+                    alias: "out"
+                    flags: OUTPUT|READONLY
+                    type:  float(64,IEEE)*
+                }
+
+                group "Integrator"
+                {
+                    block: "Integrator"
+                }
+
+                    p_0_Stromregelkreis_real_T_0[6]
+                    {
+                        addr:  0x3d490
+                        alias: "Out1"
+                        flags: OUTPUT|READONLY
+                        type:  float(64,IEEE)*
+                    }
+
+                    trcref0_InitialCondition
+                    {
+                        alias:    "InitialCondition"
+                        flags:    DEPRECATED|HIDDEN
+                        refgroup: "/Model Root/pid"
+                        refvar:   "InitialConditionForIntegrator"
+                    }
+
+                    trcref0_InitialConditionForIntegrator
+                    {
+                        alias:    "InitialConditionForIntegrator"
+                        refgroup: "/Model Root/pid"
+                        refvar:   "InitialConditionForIntegrator"
+                    }
+
+                    trcref2_LowerIntegratorSaturationLimit
+                    {
+                        alias:    "LowerIntegratorSaturationLimit"
+                        refgroup: "/Model Root/pid"
+                        refvar:   "LowerIntegratorSaturationLimit"
+                    }
+
+                    trcref2_LowerSaturationLimit
+                    {
+                        alias:    "LowerSaturationLimit"
+                        flags:    DEPRECATED|HIDDEN
+                        refgroup: "/Model Root/pid"
+                        refvar:   "LowerIntegratorSaturationLimit"
+                    }
+
+                    trcref1_UpperIntegratorSaturationLimit
+                    {
+                        alias:    "UpperIntegratorSaturationLimit"
+                        refgroup: "/Model Root/pid"
+                        refvar:   "UpperIntegratorSaturationLimit"
+                    }
+
+                    trcref1_UpperSaturationLimit
+                    {
+                        alias:    "UpperSaturationLimit"
+                        flags:    DEPRECATED|HIDDEN
+                        refgroup: "/Model Root/pid"
+                        refvar:   "UpperIntegratorSaturationLimit"
+                    }
+
+                endgroup
+
+            endgroup
+
+        endgroup
+
+        group "Integrator ICs"
+
+            group "Internal IC"
+
+            endgroup
+
+        endgroup
+
+        group "N Copy"
+
+            group "Disabled"
+
+            endgroup
+
+        endgroup
+
+        group "N Gain"
+
+            p_0_Stromregelkreis_real_T_0[10]
+            {
+                addr:  0x3d490
+                alias: "Out1"
+                flags: OUTPUT|READONLY
+                type:  float(64,IEEE)*
+            }
+
+            group "Internal Parameters"
+
+                p_0_Stromregelkreis_real_T_0[10]
+                {
+                    addr:  0x3d490
+                    alias: "Out1"
+                    flags: OUTPUT|READONLY
+                    type:  float(64,IEEE)*
+                }
+
+                group "Filter Coefficient"
+                {
+                    block: "Gain"
+                }
+
+                    p_0_Stromregelkreis_real_T_0[10]
+                    {
+                        addr:  0x3d490
+                        alias: "Out1"
+                        flags: OUTPUT|READONLY
+                        type:  float(64,IEEE)*
+                    }
+
+                    trcref0_Gain
+                    {
+                        alias:    "Gain"
+                        flags:    DEPRECATED|HIDDEN
+                        refgroup: "/Model Root/pid"
+                        refvar:   "N"
+                    }
+
+                    trcref0_N
+                    {
+                        alias:    "N"
+                        refgroup: "/Model Root/pid"
+                        refvar:   "N"
+                    }
+
+                endgroup
+
+            endgroup
+
+        endgroup
+
+        group "P Copy"
+
+            group "Disabled"
+
+            endgroup
+
+        endgroup
+
+        group "Parallel P Gain"
+
+            p_0_Stromregelkreis_real_T_0[5]
+            {
+                addr:  0x3d490
+                alias: "Out1"
+                flags: OUTPUT|READONLY
+                type:  float(64,IEEE)*
+            }
+
+            group "Internal Parameters"
+
+                p_0_Stromregelkreis_real_T_0[5]
+                {
+                    addr:  0x3d490
+                    alias: "Out1"
+                    flags: OUTPUT|READONLY
+                    type:  float(64,IEEE)*
+                }
+
+                group "Proportional Gain"
+                {
+                    block: "Gain"
+                }
+
+                    p_0_Stromregelkreis_real_T_0[5]
+                    {
+                        addr:  0x3d490
+                        alias: "Out1"
+                        flags: OUTPUT|READONLY
+                        type:  float(64,IEEE)*
+                    }
+
+                    trcref0_Gain
+                    {
+                        alias:    "Gain"
+                        flags:    DEPRECATED|HIDDEN
+                        refgroup: "/Model Root/pid"
+                        refvar:   "P"
+                    }
+
+                    trcref0_P
+                    {
+                        alias:    "P"
+                        refgroup: "/Model Root/pid"
+                        refvar:   "P"
+                    }
+
+                endgroup
+
+            endgroup
+
+        endgroup
+
+        group "PID Compensator Formula"
+
+        endgroup
+
+        group "postSat Signal"
+
+            p_0_Stromregelkreis_real_T_0[12]
+            {
+                addr:  0x3d490
+                alias: "Out1"
+                flags: OUTPUT|READONLY
+                type:  float(64,IEEE)*
+            }
+
+            group "Forward_Path"
+
+                p_0_Stromregelkreis_real_T_0[12]
+                {
+                    addr:  0x3d490
+                    alias: "Out1"
+                    flags: OUTPUT|READONLY
+                    type:  float(64,IEEE)*
+                }
+
+            endgroup
+
+        endgroup
+
+        group "preInt Signal"
+
+            p_0_Stromregelkreis_real_T_0[43]
+            {
+                addr:  0x3d490
+                alias: "Out1"
+                flags: OUTPUT|READONLY
+                type:  float(64,IEEE)*
+            }
+
+            group "Internal PreInt"
+
+                p_0_Stromregelkreis_real_T_0[43]
+                {
+                    addr:  0x3d490
+                    alias: "Out1"
+                    flags: OUTPUT|READONLY
+                    type:  float(64,IEEE)*
+                }
+
+            endgroup
+
+        endgroup
+
+        group "preSat Signal"
+
+            p_0_Stromregelkreis_real_T_0[11]
+            {
+                addr:  0x3d490
+                alias: "Out1"
+                flags: OUTPUT|READONLY
+                type:  float(64,IEEE)*
+            }
+
+            group "Forward_Path"
+
+                p_0_Stromregelkreis_real_T_0[11]
+                {
+                    addr:  0x3d490
+                    alias: "Out1"
+                    flags: OUTPUT|READONLY
+                    type:  float(64,IEEE)*
+                }
+
+            endgroup
+
+        endgroup
+
+        group "Reset Signal"
+
+            group "Disabled"
+
+            endgroup
+
+        endgroup
+
+        group "Saturation"
+
+            p_0_Stromregelkreis_real_T_0[12]
+            {
+                addr:  0x3d490
+                alias: "Out1"
+                flags: OUTPUT|READONLY
+                type:  float(64,IEEE)*
+            }
+
+            group "Enabled"
+
+                p_0_Stromregelkreis_real_T_0[12]
+                {
+                    addr:  0x3d490
+                    alias: "Out1"
+                    flags: OUTPUT|READONLY
+                    type:  float(64,IEEE)*
+                }
+
+                group "Saturation"
+                {
+                    block: "Saturate"
+                }
+
+                    p_0_Stromregelkreis_real_T_0[12]
+                    {
+                        addr:  0x3d490
+                        alias: "Out1"
+                        flags: OUTPUT|READONLY
+                        type:  float(64,IEEE)*
+                    }
+
+                    trcref1_LowerLimit
+                    {
+                        alias:    "LowerLimit"
+                        flags:    DEPRECATED|HIDDEN
+                        refgroup: "/Model Root/pid"
+                        refvar:   "LowerSaturationLimit"
+                    }
+
+                    trcref1_LowerSaturationLimit
+                    {
+                        alias:    "LowerSaturationLimit"
+                        refgroup: "/Model Root/pid"
+                        refvar:   "LowerSaturationLimit"
+                    }
+
+                    trcref0_UpperLimit
+                    {
+                        alias:    "UpperLimit"
+                        flags:    DEPRECATED|HIDDEN
+                        refgroup: "/Model Root/pid"
+                        refvar:   "UpperSaturationLimit"
+                    }
+
+                    trcref0_UpperSaturationLimit
+                    {
+                        alias:    "UpperSaturationLimit"
+                        refgroup: "/Model Root/pid"
+                        refvar:   "UpperSaturationLimit"
+                    }
+
+                endgroup
+
+            endgroup
+
+        endgroup
+
+        group "Saturation Fdbk"
+
+            group "Disabled"
+
+            endgroup
+
+        endgroup
+
+        group "Sum"
+
+            p_0_Stromregelkreis_real_T_0[11]
+            {
+                addr:  0x3d490
+                alias: "Out1"
+                flags: OUTPUT|READONLY
+                type:  float(64,IEEE)*
+            }
+
+            group "Sum_PID"
+
+                p_0_Stromregelkreis_real_T_0[11]
+                {
+                    addr:  0x3d490
+                    alias: "Out1"
+                    flags: OUTPUT|READONLY
+                    type:  float(64,IEEE)*
+                }
+
+                group "Sum"
+                {
+                    block: "Sum"
+                }
+
+                    p_0_Stromregelkreis_real_T_0[11]
+                    {
+                        addr:  0x3d490
+                        alias: "Out1"
+                        flags: OUTPUT|READONLY
+                        type:  float(64,IEEE)*
+                    }
+
+                endgroup
+
+            endgroup
+
+        endgroup
+
+        group "Sum Fdbk"
+
+            group "Disabled"
+
+            endgroup
+
+        endgroup
+
+        group "Tracking Mode"
+
+            p_0_Stromregelkreis_real_T_0[42]
+            {
+                addr:  0x3d490
+                alias: "Out1"
+                flags: OUTPUT|READONLY
+                type:  float(64,IEEE)*
+            }
+
+            group "Enabled"
+
+                p_0_Stromregelkreis_real_T_0[42]
+                {
+                    addr:  0x3d490
+                    alias: "Out1"
+                    flags: OUTPUT|READONLY
+                    type:  float(64,IEEE)*
+                }
+
+                group "Kt"
+                {
+                    block: "Gain"
+                }
+
+                    p_0_Stromregelkreis_real_T_0[42]
+                    {
+                        addr:  0x3d490
+                        alias: "Out1"
+                        flags: OUTPUT|READONLY
+                        type:  float(64,IEEE)*
+                    }
+
+                    trcref0_Gain
+                    {
+                        alias:    "Gain"
+                        flags:    DEPRECATED|HIDDEN
+                        refgroup: "/Model Root/pid"
+                        refvar:   "Kt"
+                    }
+
+                    trcref0_Kt
+                    {
+                        alias:    "Kt"
+                        refgroup: "/Model Root/pid"
+                        refvar:   "Kt"
+                    }
+
+                endgroup
+
+                group "SumI3"
+                {
+                    block: "Sum"
+                }
+
+                    p_0_Stromregelkreis_real_T_0[41]
+                    {
+                        addr:  0x3d490
+                        alias: "Out1"
+                        flags: OUTPUT|READONLY
+                        type:  float(64,IEEE)*
+                    }
+
+                endgroup
+
+            endgroup
+
+        endgroup
+
+        group "Tracking Mode Sum"
+
+            p_0_Stromregelkreis_real_T_0[43]
+            {
+                addr:  0x3d490
+                alias: "preInt"
+                flags: OUTPUT|READONLY
+                type:  float(64,IEEE)*
+            }
+
+            group "Tracking Mode"
+
+                p_0_Stromregelkreis_real_T_0[43]
+                {
+                    addr:  0x3d490
+                    alias: "preInt"
+                    flags: OUTPUT|READONLY
+                    type:  float(64,IEEE)*
+                }
+
+                group "SumI1"
+                {
+                    block: "Sum"
+                }
+
+                    p_0_Stromregelkreis_real_T_0[43]
+                    {
+                        addr:  0x3d490
+                        alias: "Out1"
+                        flags: OUTPUT|READONLY
+                        type:  float(64,IEEE)*
+                    }
+
+                endgroup
+
+            endgroup
+
+        endgroup
+
+        group "Tsamp - Integral"
+
+            p_0_Stromregelkreis_real_T_0[44]
+            {
+                addr:  0x3d490
+                alias: "Out1"
+                flags: OUTPUT|READONLY
+                type:  float(64,IEEE)*
+            }
+
+            group "TsSignalSpecification"
+
+                p_0_Stromregelkreis_real_T_0[44]
+                {
+                    addr:  0x3d490
+                    alias: "Out1"
+                    flags: OUTPUT|READONLY
+                    type:  float(64,IEEE)*
+                }
+
+            endgroup
+
+        endgroup
+
+        group "Tsamp - Ngain"
+
+            p_0_Stromregelkreis_real_T_0[10]
+            {
+                addr:  0x3d490
+                alias: "Out1"
+                flags: OUTPUT|READONLY
+                type:  float(64,IEEE)*
+            }
+
+            group "Passthrough"
+
+                p_0_Stromregelkreis_real_T_0[10]
+                {
+                    addr:  0x3d490
+                    alias: "Out1"
+                    flags: OUTPUT|READONLY
+                    type:  float(64,IEEE)*
+                }
+
+            endgroup
+
+        endgroup
+
+    endgroup
+
+    group "Ramp1"
+
+        p_1_Stromregelkreis_real_T_0[9]
+        {
+            addr:  0x3d498
+            alias: "InitialOutput"
+            flags: PARAM
+            type:  float(64,IEEE)*
+        }
+
+        p_0_Stromregelkreis_real_T_0[69]
+        {
+            addr:  0x3d490
+            alias: "Out1"
+            flags: OUTPUT|READONLY
+            type:  float(64,IEEE)*
+        }
+
+        p_1_Stromregelkreis_real_T_0[26]
+        {
+            addr:  0x3d498
+            alias: "slope"
+            flags: PARAM
+            type:  float(64,IEEE)*
+        }
+
+        p_1_Stromregelkreis_real_T_0[27]
+        {
+            addr:  0x3d498
+            alias: "start"
+            flags: PARAM
+            type:  float(64,IEEE)*
+        }
+
+        group "Clock"
+        {
+            block: "Clock"
+        }
+
+            p_0_Stromregelkreis_real_T_0[20]
+            {
+                addr:  0x3d490
+                alias: "Out1"
+                flags: OUTPUT|READONLY
+                type:  float(64,IEEE)*
+            }
+
+        endgroup
+
+        group "Constant"
+        {
+            block: "Constant"
+        }
+
+            trcref0_start
+            {
+                alias:    "start"
+                refgroup: "/Model Root/Ramp1"
+                refvar:   "start"
+            }
+
+            trcref0_Value
+            {
+                alias:    "Value"
+                flags:    DEPRECATED|HIDDEN
+                refgroup: "/Model Root/Ramp1"
+                refvar:   "start"
+            }
+
+        endgroup
+
+        group "Constant1"
+        {
+            block: "Constant"
+        }
+
+            trcref0_InitialOutput
+            {
+                alias:    "InitialOutput"
+                refgroup: "/Model Root/Ramp1"
+                refvar:   "InitialOutput"
+            }
+
+            trcref0_Value
+            {
+                alias:    "Value"
+                flags:    DEPRECATED|HIDDEN
+                refgroup: "/Model Root/Ramp1"
+                refvar:   "InitialOutput"
+            }
+
+        endgroup
+
+        group "Output"
+        {
+            block: "Sum"
+        }
+
+            p_0_Stromregelkreis_real_T_0[69]
+            {
+                addr:  0x3d490
+                alias: "Out1"
+                flags: OUTPUT|READONLY
+                type:  float(64,IEEE)*
+            }
+
+        endgroup
+
+        group "Product"
+        {
+            block: "Product"
+        }
+
+            p_0_Stromregelkreis_real_T_0[68]
+            {
+                addr:  0x3d490
+                alias: "Out1"
+                flags: OUTPUT|READONLY
+                type:  float(64,IEEE)*
+            }
+
+        endgroup
+
+        group "Step"
+        {
+            block: "Step"
+        }
+
+            p_1_Stromregelkreis_real_T_0[45]
+            {
+                addr:  0x3d498
+                alias: "Before"
+                flags: PARAM
+                type:  float(64,IEEE)*
+            }
+
+            p_0_Stromregelkreis_real_T_0[19]
+            {
+                addr:  0x3d490
+                alias: "Out1"
+                flags: OUTPUT|READONLY
+                type:  float(64,IEEE)*
+            }
+
+            trcref2_After
+            {
+                alias:    "After"
+                flags:    DEPRECATED|HIDDEN
+                refgroup: "/Model Root/Ramp1"
+                refvar:   "slope"
+            }
+
+            trcref2_slope
+            {
+                alias:    "slope"
+                refgroup: "/Model Root/Ramp1"
+                refvar:   "slope"
+            }
+
+            trcref0_start
+            {
+                alias:    "start"
+                refgroup: "/Model Root/Ramp1"
+                refvar:   "start"
+            }
+
+            trcref0_Time
+            {
+                alias:    "Time"
+                flags:    DEPRECATED|HIDDEN
+                refgroup: "/Model Root/Ramp1"
+                refvar:   "start"
+            }
+
+        endgroup
+
+        group "Sum"
+        {
+            block: "Sum"
+        }
+
+            p_0_Stromregelkreis_real_T_0[67]
+            {
+                addr:  0x3d490
+                alias: "Out1"
+                flags: OUTPUT|READONLY
+                type:  float(64,IEEE)*
+            }
+
+        endgroup
+
+    endgroup
+
+    group "RTI Data"
+
+    endgroup
+
+    group "Stromregelung"
+
+        p_0_Stromregelkreis_boolean_T_1[1]
+        {
+            addr:    0x3d494
+            alias:   "Out1"
+            bitmask: 0x1
+            flags:   OUTPUT|READONLY
+            range:   < 0 ; 1 >
+            type:    uint(8)*
+        }
+
+        p_0_Stromregelkreis_boolean_T_1[2]
+        {
+            addr:    0x3d494
+            alias:   "Out2"
+            bitmask: 0x1
+            flags:   OUTPUT|READONLY
+            range:   < 0 ; 1 >
+            type:    uint(8)*
+        }
+
+        p_0_Stromregelkreis_boolean_T_1[3]
+        {
+            addr:    0x3d494
+            alias:   "Out3"
+            bitmask: 0x1
+            flags:   OUTPUT|READONLY
+            range:   < 0 ; 1 >
+            type:    uint(8)*
+        }
+
+        group "DS1104ADC_C5"
+
+            p_0_Stromregelkreis_real_T_0[25]
+            {
+                addr:  0x3d490
+                alias: "ADC"
+                flags: OUTPUT|READONLY
+                type:  float(64,IEEE)*
+            }
+
+        endgroup
+
+        group "DS1104ADC_C6"
+
+            p_0_Stromregelkreis_real_T_0[31]
+            {
+                addr:  0x3d490
+                alias: "ADC"
+                flags: OUTPUT|READONLY
+                type:  float(64,IEEE)*
+            }
+
+        endgroup
+
+        group "DS1104ADC_C7"
+
+            p_0_Stromregelkreis_real_T_0[35]
+            {
+                addr:  0x3d490
+                alias: "ADC"
+                flags: OUTPUT|READONLY
+                type:  float(64,IEEE)*
+            }
+
+        endgroup
+
+        group "Iu_ist"
+        {
+            block: "Gain"
+        }
+
+            p_1_Stromregelkreis_real_T_0[49]
+            {
+                addr:  0x3d498
+                alias: "Gain"
+                flags: PARAM
+                type:  float(64,IEEE)*
+            }
+
+            p_0_Stromregelkreis_real_T_0[26]
+            {
+                addr:  0x3d490
+                alias: "Out1"
+                flags: OUTPUT|READONLY
+                type:  float(64,IEEE)*
+            }
+
+        endgroup
+
+        group "Iv_ist"
+        {
+            block: "Gain"
+        }
+
+            p_1_Stromregelkreis_real_T_0[56]
+            {
+                addr:  0x3d498
+                alias: "Gain"
+                flags: PARAM
+                type:  float(64,IEEE)*
+            }
+
+            p_0_Stromregelkreis_real_T_0[32]
+            {
+                addr:  0x3d490
+                alias: "Out1"
+                flags: OUTPUT|READONLY
+                type:  float(64,IEEE)*
+            }
+
+        endgroup
+
+        group "Iw_ist"
+        {
+            block: "Gain"
+        }
+
+            p_1_Stromregelkreis_real_T_0[63]
+            {
+                addr:  0x3d498
+                alias: "Gain"
+                flags: PARAM
+                type:  float(64,IEEE)*
+            }
+
+            p_0_Stromregelkreis_real_T_0[36]
+            {
+                addr:  0x3d490
+                alias: "Out1"
+                flags: OUTPUT|READONLY
+                type:  float(64,IEEE)*
+            }
+
+        endgroup
+
+        group "ON//OFF"
+        {
+            block: "Constant"
+        }
+
+            p_1_Stromregelkreis_real_T_0[46]
+            {
+                addr:  0x3d498
+                alias: "Value"
+                flags: PARAM
+                type:  float(64,IEEE)*
+            }
+
+        endgroup
+
+        group "Relay"
+        {
+            block: "Relay"
+        }
+
+            p_1_Stromregelkreis_boolean_T_1[1]
+            {
+                addr:    0x3d49c
+                alias:   "OffOutputValue"
+                bitmask: 0x1
+                flags:   PARAM
+                range:   < 0 ; 1 >
+                type:    uint(8)*
+            }
+
+            p_1_Stromregelkreis_real_T_0[51]
+            {
+                addr:  0x3d498
+                alias: "OffSwitchValue"
+                flags: PARAM
+                type:  float(64,IEEE)*
+            }
+
+            p_1_Stromregelkreis_boolean_T_1[0]
+            {
+                addr:    0x3d49c
+                alias:   "OnOutputValue"
+                bitmask: 0x1
+                flags:   PARAM
+                range:   < 0 ; 1 >
+                type:    uint(8)*
+            }
+
+            p_1_Stromregelkreis_real_T_0[50]
+            {
+                addr:  0x3d498
+                alias: "OnSwitchValue"
+                flags: PARAM
+                type:  float(64,IEEE)*
+            }
+
+            p_0_Stromregelkreis_boolean_T_1[1]
+            {
+                addr:    0x3d494
+                alias:   "Out1"
+                bitmask: 0x1
+                flags:   OUTPUT|READONLY
+                range:   < 0 ; 1 >
+                type:    uint(8)*
+            }
+
+        endgroup
+
+        group "Relay1"
+        {
+            block: "Relay"
+        }
+
+            p_1_Stromregelkreis_boolean_T_1[3]
+            {
+                addr:    0x3d49c
+                alias:   "OffOutputValue"
+                bitmask: 0x1
+                flags:   PARAM
+                range:   < 0 ; 1 >
+                type:    uint(8)*
+            }
+
+            p_1_Stromregelkreis_real_T_0[58]
+            {
+                addr:  0x3d498
+                alias: "OffSwitchValue"
+                flags: PARAM
+                type:  float(64,IEEE)*
+            }
+
+            p_1_Stromregelkreis_boolean_T_1[2]
+            {
+                addr:    0x3d49c
+                alias:   "OnOutputValue"
+                bitmask: 0x1
+                flags:   PARAM
+                range:   < 0 ; 1 >
+                type:    uint(8)*
+            }
+
+            p_1_Stromregelkreis_real_T_0[57]
+            {
+                addr:  0x3d498
+                alias: "OnSwitchValue"
+                flags: PARAM
+                type:  float(64,IEEE)*
+            }
+
+            p_0_Stromregelkreis_boolean_T_1[2]
+            {
+                addr:    0x3d494
+                alias:   "Out1"
+                bitmask: 0x1
+                flags:   OUTPUT|READONLY
+                range:   < 0 ; 1 >
+                type:    uint(8)*
+            }
+
+        endgroup
+
+        group "Relay2"
+        {
+            block: "Relay"
+        }
+
+            p_1_Stromregelkreis_boolean_T_1[5]
+            {
+                addr:    0x3d49c
+                alias:   "OffOutputValue"
+                bitmask: 0x1
+                flags:   PARAM
+                range:   < 0 ; 1 >
+                type:    uint(8)*
+            }
+
+            p_1_Stromregelkreis_real_T_0[65]
+            {
+                addr:  0x3d498
+                alias: "OffSwitchValue"
+                flags: PARAM
+                type:  float(64,IEEE)*
+            }
+
+            p_1_Stromregelkreis_boolean_T_1[4]
+            {
+                addr:    0x3d49c
+                alias:   "OnOutputValue"
+                bitmask: 0x1
+                flags:   PARAM
+                range:   < 0 ; 1 >
+                type:    uint(8)*
+            }
+
+            p_1_Stromregelkreis_real_T_0[64]
+            {
+                addr:  0x3d498
+                alias: "OnSwitchValue"
+                flags: PARAM
+                type:  float(64,IEEE)*
+            }
+
+            p_0_Stromregelkreis_boolean_T_1[3]
+            {
+                addr:    0x3d494
+                alias:   "Out1"
+                bitmask: 0x1
+                flags:   OUTPUT|READONLY
+                range:   < 0 ; 1 >
+                type:    uint(8)*
+            }
+
+        endgroup
+
+        group "Startwert"
+        {
+            block: "Constant"
+        }
+
+            p_1_Stromregelkreis_real_T_0[47]
+            {
+                addr:  0x3d498
+                alias: "Value"
+                flags: PARAM
+                type:  float(64,IEEE)*
+            }
+
+        endgroup
+
+        group "Sum"
+        {
+            block: "Sum"
+        }
+
+            p_0_Stromregelkreis_real_T_0[27]
+            {
+                addr:  0x3d490
+                alias: "Out1"
+                flags: OUTPUT|READONLY
+                type:  float(64,IEEE)*
+            }
+
+        endgroup
+
+        group "Sum1"
+        {
+            block: "Sum"
+        }
+
+            p_0_Stromregelkreis_real_T_0[33]
+            {
+                addr:  0x3d490
+                alias: "Out1"
+                flags: OUTPUT|READONLY
+                type:  float(64,IEEE)*
+            }
+
+        endgroup
+
+        group "Sum2"
+        {
+            block: "Sum"
+        }
+
+            p_0_Stromregelkreis_real_T_0[37]
+            {
+                addr:  0x3d490
+                alias: "Out1"
+                flags: OUTPUT|READONLY
+                type:  float(64,IEEE)*
+            }
+
+        endgroup
+
+        group "Switch"
+        {
+            block: "Switch"
+        }
+
+            p_0_Stromregelkreis_real_T_0[24]
+            {
+                addr:  0x3d490
+                alias: "Out1"
+                flags: OUTPUT|READONLY
+                type:  float(64,IEEE)*
+            }
+
+            p_1_Stromregelkreis_real_T_0[48]
+            {
+                addr:  0x3d498
+                alias: "Threshold"
+                flags: PARAM
+                type:  float(64,IEEE)*
+            }
+
+        endgroup
+
+        group "Switch1"
+        {
+            block: "Switch"
+        }
+
+            p_0_Stromregelkreis_real_T_0[30]
+            {
+                addr:  0x3d490
+                alias: "Out1"
+                flags: OUTPUT|READONLY
+                type:  float(64,IEEE)*
+            }
+
+            p_1_Stromregelkreis_real_T_0[55]
+            {
+                addr:  0x3d498
+                alias: "Threshold"
+                flags: PARAM
+                type:  float(64,IEEE)*
+            }
+
+        endgroup
+
+        group "Switch2"
+        {
+            block: "Switch"
+        }
+
+            p_0_Stromregelkreis_real_T_0[34]
+            {
+                addr:  0x3d490
+                alias: "Out1"
+                flags: OUTPUT|READONLY
+                type:  float(64,IEEE)*
+            }
+
+            p_1_Stromregelkreis_real_T_0[62]
+            {
+                addr:  0x3d498
+                alias: "Threshold"
+                flags: PARAM
+                type:  float(64,IEEE)*
+            }
+
+        endgroup
+
+    endgroup
+
+    group "Sum"
+    {
+        block: "Sum"
+    }
+
+        p_0_Stromregelkreis_real_T_0[4]
+        {
+            addr:  0x3d490
+            alias: "Out1"
+            flags: OUTPUT|READONLY
+            type:  float(64,IEEE)*
+        }
+
+    endgroup
+
+    group "Switch"
+    {
+        block: "Switch"
+    }
+
+        p_0_Stromregelkreis_real_T_0[21]
+        {
+            addr:  0x3d490
+            alias: "Out1"
+            flags: OUTPUT|READONLY
+            type:  float(64,IEEE)*
+        }
+
+    endgroup
+
+endgroup
+
+group "Task Info"
+
+    group "Timer Task 1"
+
+        pRti_TIMERA_OType
+        {
+            addr:  0x3e064
+            alias: "overrunCheckType"
+            flags: READONLY
+            type:  int(32)*
+        }
+
+        pRti_TIMERA_OCnt
+        {
+            addr:  0x3e070
+            alias: "overrunCount"
+            flags: READONLY
+            type:  int(32)*
+        }
+
+        pRti_TIMERA_ORpt
+        {
+            addr:  0x3e06c
+            alias: "overrunQueueCount"
+            flags: READONLY
+            type:  int(32)*
+        }
+
+        pRti_TIMERA_OMax
+        {
+            addr:  0x3e068
+            alias: "overrunQueueMax"
+            flags: READONLY
+            type:  int(32)*
+        }
+
+        pRti_TIMERA_Prio
+        {
+            addr:  0x3e078
+            alias: "priority"
+            flags: READONLY
+            type:  int(32)*
+        }
+
+        pRti_TIMERA_STime
+        {
+            addr:  0x3e058
+            alias: "sampleTime"
+            flags: READONLY
+            type:  float(64,IEEE)*
+        }
+
+        pRti_TIMERA_TState
+        {
+            addr:  0x3e060
+            alias: "state"
+            flags: READONLY
+            type:  int(32)*
+        }
+
+        pRti_TIMERA_TCnt
+        {
+            addr:  0x3e074
+            alias: "taskCallCount"
+            flags: READONLY
+            type:  float(64,IEEE)*
+        }
+
+        pRti_TIMERA_TTime
+        {
+            addr:  0x3e05c
+            alias: "turnaroundTime"
+            flags: READONLY
+            type:  float(64,IEEE)*
+        }
+
+    endgroup
+
+endgroup
+
+group "Tunable Parameters"
+
+    p_1_Stromregelkreis_real_T_0[0]
+    {
+        addr:  0x3d498
+        alias: "ta"
+        flags: PARAM
+        type:  float(64,IEEE)*
+    }
+
+endgroup
+
+

@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<VariableDescriptionMetaData SchemaVersion="1">
+  <SerializedFileName>stromregelkreis.vdp</SerializedFileName>
+  <IsActive>true</IsActive>
+  <FileName>stromregelkreis.sdf</FileName>
+  <VariableDescriptionSourcePathAndFileName>..\stromregelkreis.sdf</VariableDescriptionSourcePathAndFileName>
+  <ImportOptions>
+    <DisableLookupDetection>false</DisableLookupDetection>
+    <MeasurementArrayOmitThreshold>10000</MeasurementArrayOmitThreshold>
+    <ValueBlockOmitThreshold>10000</ValueBlockOmitThreshold>
+  </ImportOptions>
+  <BuildResultXilMapping>
+    <IsActive>false</IsActive>
+    <FileName />
+    <SourcePathAndFileName />
+  </BuildResultXilMapping>
+</VariableDescriptionMetaData>

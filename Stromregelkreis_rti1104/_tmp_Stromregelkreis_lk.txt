@@ -1,0 +1,1 @@
+-- call "C:\ProgramData\dSPACE\BEA8E2A4-CA20-4310-B3B2-79D32FF22740\Compiler\PPCTools\BIN\lnkppc.exe"  -K0 -QmsA0314 -QmeA0307 -QmeA0329 -m..\Stromregelkreis.map -o ..\Stromregelkreis.ppc -c _tmp_Stromregelkreis.lk 

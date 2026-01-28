@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<MF0 version="1.1" packageUris="http://schema.mathworks.com/mf0/faultinfo_datamodel/R2021a">
+  <faultinfo.FaultContainerSet type="faultinfo.FaultContainerSet" uuid="ad4e4e41-94b8-4ec9-b4e6-b4f8780258bd">
+    <conditionals type="faultinfo.conditional.Conditional" uuid="a911c575-f576-4505-bd30-acc5664b8aab">
+      <checksum>00000000-0000-0000-0000-000000000000</checksum>
+      <condition>x == true</condition>
+      <mustBeLogged>false</mustBeLogged>
+      <name>SampleConditional</name>
+      <resyncRefBlkID></resyncRefBlkID>
+      <resyncUUID>00000000-0000-0000-0000-000000000000</resyncUUID>
+      <symbols type="faultinfo.conditional.ExpressionSymbol" uuid="9c36b1e6-0c1a-4651-aca0-98332f344a9f">
+        <expression>true</expression>
+        <name>x</name>
+      </symbols>
+    </conditionals>
+    <isEnabled>false</isEnabled>
+    <lastUpdatedAt>2026-01-27T14:59:26</lastUpdatedAt>
+    <modelName>Stromregelkreis</modelName>
+    <modelUUID>6b315d80-d406-483f-a13f-21cd7d9589cd</modelUUID>
+  </faultinfo.FaultContainerSet>
+</MF0>
