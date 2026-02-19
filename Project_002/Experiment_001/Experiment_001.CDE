@@ -147,9 +147,9 @@
 							<Path type="key">.\Variable Descriptions\stromregelkreis.sdf</Path>
 							<Flags type="key">18692</Flags>
 							<Type type="key">4</Type>
-							<UniqueID type="key">919060503</UniqueID>
-							<EntityID type="key">{2E5B0D46-7D65-472B-82E5-8F3FC0515FF6}</EntityID>
-							<ItemInfoDate type="key">2026-01-27 16:36:50</ItemInfoDate>
+							<UniqueID type="key">764036849</UniqueID>
+							<EntityID type="key">{1B81D631-1EAF-4977-B43C-76529724DF48}</EntityID>
+							<ItemInfoDate type="key">2026-02-17 15:41:18</ItemInfoDate>
 							<ItemInfoPath type="key">$FPATH$</ItemInfoPath>
 							<ItemInfoDescr type="key"/>
 							<ItemInfoAddInfoDb type="key"/>
@@ -162,9 +162,9 @@
 							<Path type="key">.\Variable Descriptions\stromregelkreis.sdf</Path>
 							<Flags type="key">18692</Flags>
 							<Type type="key">4</Type>
-							<UniqueID type="key">160373204</UniqueID>
-							<EntityID type="key">{02F74076-C58D-4990-A61A-CF8D3B4C3487}</EntityID>
-							<ItemInfoDate type="key">2026-01-27 16:36:49</ItemInfoDate>
+							<UniqueID type="key">52806559</UniqueID>
+							<EntityID type="key">{BDFA63B5-64FD-4E83-BDF9-38900F862C27}</EntityID>
+							<ItemInfoDate type="key">2026-02-17 15:41:18</ItemInfoDate>
 							<ItemInfoPath type="key">$FPATH$</ItemInfoPath>
 							<ItemInfoDescr type="key"/>
 							<ItemInfoAddInfoDb type="key"/>
@@ -177,9 +177,9 @@
 							<Path type="key">.\Variable Descriptions\stromregelkreis.sdf</Path>
 							<Flags type="key">18692</Flags>
 							<Type type="key">4</Type>
-							<UniqueID type="key">230275843</UniqueID>
-							<EntityID type="key">{1961FC64-72D1-40A7-863C-D550AA5B623D}</EntityID>
-							<ItemInfoDate type="key">2026-01-27 16:36:49</ItemInfoDate>
+							<UniqueID type="key">994443258</UniqueID>
+							<EntityID type="key">{6379F88B-4D78-419D-86D4-2568545C117F}</EntityID>
+							<ItemInfoDate type="key">2026-02-17 15:41:18</ItemInfoDate>
 							<ItemInfoPath type="key">$FPATH$</ItemInfoPath>
 							<ItemInfoDescr type="key"/>
 							<ItemInfoAddInfoDb type="key"/>
@@ -192,9 +192,9 @@
 							<Path type="key">.\Variable Descriptions\stromregelkreis.sdf</Path>
 							<Flags type="key">18692</Flags>
 							<Type type="key">4</Type>
-							<UniqueID type="key">25853588</UniqueID>
-							<EntityID type="key">{C37BFA40-37DE-4166-8EB0-99A5230042E0}</EntityID>
-							<ItemInfoDate type="key">2026-01-27 16:36:49</ItemInfoDate>
+							<UniqueID type="key">756087207</UniqueID>
+							<EntityID type="key">{C759CF95-4960-4E2E-A480-8AF59FA660E2}</EntityID>
+							<ItemInfoDate type="key">2026-02-17 15:41:18</ItemInfoDate>
 							<ItemInfoPath type="key">$FPATH$</ItemInfoPath>
 							<ItemInfoDescr type="key"/>
 							<ItemInfoAddInfoDb type="key"/>
@@ -207,9 +207,9 @@
 							<Path type="key">.\Variable Descriptions\stromregelkreis.sdf</Path>
 							<Flags type="key">18692</Flags>
 							<Type type="key">4</Type>
-							<UniqueID type="key">596414264</UniqueID>
-							<EntityID type="key">{7157DCB4-8094-4629-9D2F-2BE328D20BE6}</EntityID>
-							<ItemInfoDate type="key">2026-01-27 16:36:49</ItemInfoDate>
+							<UniqueID type="key">816409522</UniqueID>
+							<EntityID type="key">{7E65305E-335A-4425-BB45-61691160CC5F}</EntityID>
+							<ItemInfoDate type="key">2026-02-17 15:41:18</ItemInfoDate>
 							<ItemInfoPath type="key">$FPATH$</ItemInfoPath>
 							<ItemInfoDescr type="key"/>
 							<ItemInfoAddInfoDb type="key"/>
@@ -563,23 +563,15 @@
 		<SortAscending type="key">-1</SortAscending>
 		<SignalList>
 			<Variable>
-				<Name type="key">Model Root/DS1104ENC_POS_C1/Enc position</Name>
+				<Name type="key">Model Root/Lage-Ist/Gain</Name>
 				<Platform type="key">0461447d-a587-4846-8f59-d652ceb81cce</Platform>
 				<Active type="key">-1</Active>
 				<Signal>
-					<Raster type="key">HostService</Raster>
+					<Raster type="key">OnChange</Raster>
 				</Signal>
 			</Variable>
 			<Variable>
-				<Name type="key">Model Root/Stromregelung/Iu_ist/Out1</Name>
-				<Platform type="key">0461447d-a587-4846-8f59-d652ceb81cce</Platform>
-				<Active type="key">-1</Active>
-				<Signal>
-					<Raster type="key">HostService</Raster>
-				</Signal>
-			</Variable>
-			<Variable>
-				<Name type="key">Model Root/Stromregelung/Iv_ist/Out1</Name>
+				<Name type="key">Model Root/Lage-Ist/Out1</Name>
 				<Platform type="key">0461447d-a587-4846-8f59-d652ceb81cce</Platform>
 				<Active type="key">-1</Active>
 				<Signal>
@@ -609,13 +601,21 @@
 					<PlatformTrigger>
 						<UniqueKey type="key">2</UniqueKey>
 						<Name type="key">Platform Trigger 1</Name>
-						<Condition type="key"/>
-						<Delay type="key">0</Delay>
-						<Enabled type="key">0</Enabled>
+						<Condition type="key">posedge ( Lage_Soll_Value, 100 )</Condition>
+						<Delay type="key">-0.02</Delay>
+						<Enabled type="key">-1</Enabled>
 						<Timeout type="key">0</Timeout>
 						<TimeoutEnabled type="key">0</TimeoutEnabled>
 						<VariableMappings>
-							<Platform type="key"/>
+							<Platform type="key">0461447d-a587-4846-8f59-d652ceb81cce</Platform>
+							<VariableMapping>
+								<Symbol type="key">n_soll_Value</Symbol>
+								<Signal type="key">Model Root/n_soll/Value</Signal>
+							</VariableMapping>
+							<VariableMapping>
+								<Symbol type="key">Lage_Soll_Value</Symbol>
+								<Signal type="key">Model Root/Lage-Soll/Value</Signal>
+							</VariableMapping>
 						</VariableMappings>
 					</PlatformTrigger>
 				</PlatformTriggers>
@@ -639,7 +639,7 @@
 				<UniqueKey type="key">3</UniqueKey>
 				<Name type="key">Duration Trigger 1</Name>
 				<Delay type="key">0</Delay>
-				<Duration type="key">1</Duration>
+				<Duration type="key">5</Duration>
 				<Enabled type="key">-1</Enabled>
 			</DurationTrigger>
 		</DurationTriggers>
@@ -737,25 +737,16 @@
 				</StorageInformation>
 				<SignalList>
 					<Variable>
-						<Name type="key">Model Root/DS1104ENC_POS_C1/Enc position</Name>
+						<Name type="key">Model Root/Lage-Ist/Gain</Name>
 						<Platform type="key">0461447d-a587-4846-8f59-d652ceb81cce</Platform>
 						<PlatformDisplayName type="key">Platform</PlatformDisplayName>
 						<Recorded type="key">-1</Recorded>
 						<Signal>
-							<Raster type="key">HostService</Raster>
+							<Raster type="key">OnChange</Raster>
 						</Signal>
 					</Variable>
 					<Variable>
-						<Name type="key">Model Root/Stromregelung/Iu_ist/Out1</Name>
-						<Platform type="key">0461447d-a587-4846-8f59-d652ceb81cce</Platform>
-						<PlatformDisplayName type="key">Platform</PlatformDisplayName>
-						<Recorded type="key">-1</Recorded>
-						<Signal>
-							<Raster type="key">HostService</Raster>
-						</Signal>
-					</Variable>
-					<Variable>
-						<Name type="key">Model Root/Stromregelung/Iv_ist/Out1</Name>
+						<Name type="key">Model Root/Lage-Ist/Out1</Name>
 						<Platform type="key">0461447d-a587-4846-8f59-d652ceb81cce</Platform>
 						<PlatformDisplayName type="key">Platform</PlatformDisplayName>
 						<Recorded type="key">-1</Recorded>

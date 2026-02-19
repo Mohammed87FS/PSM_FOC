@@ -54,13 +54,13 @@
         &lt;property name="DocumentGroup.Pinned" OwnerType="DevExpress.Xpf.Docking.DocumentGroup" DependencyPropertyType="System.Boolean"&gt;false&lt;/property&gt;
         &lt;property name="Name"&gt;Instrumentatioǹ7c̀dc218a5à2d̀8c08̀2d̀427à2d̀a796̀2d̀4568df4bab69̀2f̀0&lt;/property&gt;
         &lt;property name="SerializableMDIBounds"&gt;0,0,NaN,NaN&lt;/property&gt;
-        &lt;property name="TabCaption" type="System.String"&gt;Layout1*&lt;/property&gt;
-        &lt;property name="Caption" type="System.String"&gt;Layout1*&lt;/property&gt;
+        &lt;property name="TabCaption" type="System.String"&gt;Layout1&lt;/property&gt;
+        &lt;property name="Caption" type="System.String"&gt;Layout1&lt;/property&gt;
       &lt;/property&gt;
     &lt;/property&gt;
     &lt;property name="ManualClosedPanelsBarVisibility"&gt;false&lt;/property&gt;
     &lt;property name="ShowFloatWindowsInTaskbar"&gt;true&lt;/property&gt;
-    &lt;property name="RestoreLayoutOptions.FloatPanelsRestoreOffset" OwnerType="DevExpress.Xpf.Docking.RestoreLayoutOptions" DependencyPropertyType="System.Windows.Point"&gt;25,164&lt;/property&gt;
+    &lt;property name="RestoreLayoutOptions.FloatPanelsRestoreOffset" OwnerType="DevExpress.Xpf.Docking.RestoreLayoutOptions" DependencyPropertyType="System.Windows.Point"&gt;377,164&lt;/property&gt;
   &lt;/property&gt;
 &lt;/XtraSerializer&gt;</RelativeDocumentPlacement>
 		</window>
