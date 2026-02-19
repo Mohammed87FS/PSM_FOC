@@ -1,4 +1,4 @@
-![Image](image.png)
+![Image](photo_2026-02-19_19-32-35.jpg)
 
 ## Projektbeschreibung
 
