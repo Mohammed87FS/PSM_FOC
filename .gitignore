@@ -1,0 +1,18 @@
+# dSPACE RTI / Simulink build output
+*_rti1104/
+slprj/
+*.slxc
+*.map
+*.ppc
+*.trc
+*.sdf
+*.dsbuildinfo
+*_faultInfo.xml
+*_usr.c
+*_usr.mk
+*.slx.r20*
+*.autosave
+Project_002/Experiment_001/Variable Descriptions/
+
+# MATLAB
+*.asv
